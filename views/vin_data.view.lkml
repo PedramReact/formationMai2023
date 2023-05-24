@@ -106,7 +106,12 @@ view: vin_data {
     drill_fields: [model, count]
     sql: ${model};;
   }
-
+  dimension: dealer_name_zobir {
+    group_label: "zobir"
+    type: string
+    #sql: ${dealer_name};;
+    sql: REPLACE(${dealer_name}, ‘-’, ‘ ‘);;
+  }
   measure: count_distinct_pedram {
     type: count_distinct
     sql: ${model};;
