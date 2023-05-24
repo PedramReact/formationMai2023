@@ -90,4 +90,9 @@ view: vin_data {
     type: count_distinct
     sql: ${model};;
   }
+  measure: count_distinct {
+    type: count_distinct
+    sql: ${model};;
+  }
+
 }
