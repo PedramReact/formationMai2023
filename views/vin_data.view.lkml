@@ -97,4 +97,10 @@ view: vin_data {
     drill_fields: [version,brand,dealer_name]
   }
 
+  measure: uniq_model_matveeva {
+    type:  count_distinct
+    sql:  ${model} ;;
+    drill_fields: [ model ]
+  }
+
 }
