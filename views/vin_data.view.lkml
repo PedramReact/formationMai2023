@@ -105,4 +105,8 @@ view: vin_data {
     drill_fields: [ model ]
   }
 
+  dimension: DealerNameModif_Matveeva {
+    type: string
+    sql: REPLACE(${TABLE}.dealer_name, " ", "_") ;;
+  }
 }
