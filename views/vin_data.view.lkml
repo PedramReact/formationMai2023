@@ -86,10 +86,12 @@ view: vin_data {
     type: count_distinct
     sql: ${version};;
   }
-  measure: count_distinct_DEB {
+
+  measure: models_zobir {
+    group_label: "zobir"
     type: count_distinct
+    drill_fields: [model, count]
     sql: ${model};;
-    drill_fields: [model]
   }
   measure: count_distinct_pedram {
     type: count_distinct
