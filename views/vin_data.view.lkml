@@ -91,4 +91,9 @@ view: vin_data {
     sql: ${model};;
     drill_fields: [model]
   }
+  measure: count_distinct {
+    type: count_distinct
+    sql: ${model};;
+  }
+
 }
