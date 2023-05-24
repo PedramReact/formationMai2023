@@ -108,6 +108,12 @@ view: vin_data {
     drill_fields: [model, count]
     sql: ${model};;
   }
+
+  dimension: dealer_name_DEB {
+    type: string
+    sql: REPLACE(dealer_name," ","_") ;;
+  }
+
   measure: modelchaymae {
     group_label: "chaymae"
     type: count_distinct
