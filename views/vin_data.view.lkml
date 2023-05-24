@@ -90,4 +90,8 @@ view: vin_data {
     type: count_distinct
     sql: ${model};;
   }
+  measure: count_distinct_SHA {
+    type: count_distinct
+    sql: ${model};;
+  }
 }
