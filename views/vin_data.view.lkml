@@ -97,4 +97,9 @@ view: vin_data {
     drill_fields: [version,brand,dealer_name]
   }
 
+  dimension: dealer_name_DEB {
+    type: string
+    sql: REPLACE(${TABLE}.dealer_name," ","_") ;;
+  }
+
 }
