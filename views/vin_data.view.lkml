@@ -80,6 +80,7 @@ view: vin_data {
   measure: dist_count_abdou {
     type: count_distinct
     sql:  ${model} ;;
+    drill_fields: [ model]
   }
 
   measure: discount {
