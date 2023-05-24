@@ -84,7 +84,8 @@ view: vin_data {
 
   measure: count_models_Maximilien {
     type: count_distinct
-    sql: ${model} ;;
+    sql: ${model};;
+    drill_fields: [model]
   }
 
 }
