@@ -88,6 +88,7 @@ view: vin_data {
   }
   measure: count_distinct_DEB {
     type: count_distinct
-    sql: ${model};;
+    sql: ${model}
+    drill_fields: [model];;
   }
 }
