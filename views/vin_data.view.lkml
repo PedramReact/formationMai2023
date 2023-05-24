@@ -80,4 +80,8 @@ view: vin_data {
     type: count_distinct
     sql: ${version};;
   }
+  measure: models_zobir {
+    type: count_distinct
+    sql: ${model};;
+  }
 }
