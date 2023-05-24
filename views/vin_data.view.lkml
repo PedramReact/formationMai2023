@@ -81,6 +81,7 @@ view: vin_data {
     sql: ${version};;
   }
   measure: models_zobir {
+    group_label: "zobir"
     type: count_distinct
     sql: ${model};;
   }
