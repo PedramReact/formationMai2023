@@ -22,6 +22,12 @@ view: vin_data {
     sql: ${TABLE}.dealer_name ;;
   }
 
+  dimension: dealer_name_modifie_junaid {
+    group_label: "junaid"
+    type: string
+    sql: replace(${dealer_name}, " ", "_") ;;
+  }
+
   dimension: engine {
     type: string
     sql: ${TABLE}.engine ;;
