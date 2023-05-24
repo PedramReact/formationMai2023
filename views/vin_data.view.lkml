@@ -80,4 +80,10 @@ view: vin_data {
     type: count_distinct
     sql: ${version};;
   }
+
+  measure: junaid_nombre_distinct_modeles {
+    group_label: "junaid"
+    type: count_distinct
+    sql: ${model};;
+  }
 }
