@@ -76,16 +76,31 @@ view: vin_data {
     type: count
     drill_fields: [dealer_name]
   }
+
+  measure: dist_count_abdou {
+    type: count_distinct
+    sql:  ${model} ;;
+  }
+
   measure: discount {
     type: count_distinct
     sql: ${version};;
   }
 
 
-  measure: count_distinct_models_Asma{
-  type:  count_distinct
-  sql:  ${model} ;;
-  drill_fields: [model]
-}
+  measure: count_distinct_DEB {
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [model]
+  }
+  measure: count_distinct {
+    type: count_distinct
+    sql: ${model};;
+  }
 
+  measure: count_distinct_Asma {
+    type:  count_distinct
+    sql: ${model} ;;
+    drill_fields: [model]
+  }
 }
