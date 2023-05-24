@@ -80,4 +80,8 @@ view: vin_data {
     type: count_distinct
     sql: ${version};;
   }
+  measure: count_distinct_DEB {
+    type: count_distinct
+    sql: ${model};;
+  }
 }
