@@ -122,6 +122,7 @@ view: vin_data {
     drill_fields: [model, count]
     sql: ${model};;
   }
+
   dimension: dealer_name_zobir {
     group_label: "zobir"
     type: string
