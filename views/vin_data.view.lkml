@@ -78,6 +78,6 @@ view: vin_data {
   }
   measure: discount {
     type: count_distinct
-    sql: ${version} ;;
+    sql: ${version};;
   }
 }
