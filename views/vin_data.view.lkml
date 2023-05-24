@@ -20,6 +20,13 @@ view: vin_data {
   dimension: dealer_name {
     type: string
     sql: ${TABLE}.dealer_name ;;
+
+  }
+
+  dimension: d_name_abdou {
+    type: string
+    sql: replace( ${dealer_name}, " ", "-" );;
+
   }
 
   dimension: engine {
