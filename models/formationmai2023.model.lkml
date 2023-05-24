@@ -10,10 +10,10 @@ datagroup: formationmai2023_default_datagroup {
 
 persist_with: formationmai2023_default_datagroup
 
-explore: pareto {}
+#explore: pareto {}
 
 explore: vin_data {}
 
-explore: data_pareto_v2 {}
+#explore: data_pareto_v2 {}
 
-explore: ig_2j {}
+#explore: ig_2j {}
