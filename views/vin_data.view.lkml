@@ -76,6 +76,7 @@ view: vin_data {
     type: count
     drill_fields: [dealer_name]
   }
+
   measure: discount {
     type: count_distinct
     sql: ${version};;
