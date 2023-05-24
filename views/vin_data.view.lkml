@@ -77,6 +77,11 @@ view: vin_data {
     drill_fields: [dealer_name]
   }
 
+  measure: dist_count_abdou {
+    type: count_distinct
+    sql:  ${model} ;;
+  }
+
   measure: discount {
     type: count_distinct
     sql: ${version};;
@@ -88,4 +93,17 @@ view: vin_data {
     sql: ${model};;
     drill_fields: [model]
   }
+
+  measure: count_distinct_DEB {
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [model]
+  }
+
+  measure: count_distinct_pedram {
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [version,brand,dealer_name]
+  }
+
 }
