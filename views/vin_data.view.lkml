@@ -76,10 +76,17 @@ view: vin_data {
     type: count
     drill_fields: [dealer_name]
   }
+
+  measure: dist_count_abdou {
+    type: count_distinct
+    sql:  ${model} ;;
+  }
+
   measure: discount {
     type: count_distinct
     sql: ${version};;
   }
+
   measure: models_zobir {
     group_label: "zobir"
     type: count_distinct
