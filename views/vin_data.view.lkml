@@ -82,7 +82,7 @@ view: vin_data {
     sql: ${version} ;;
   }
 
-  measure: count_models {
+  measure: count_models_Maximilien {
     type: count_distinct
     sql: ${model} ;;
   }
