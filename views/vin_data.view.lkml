@@ -90,7 +90,7 @@ view: vin_data {
   measure: models_zobir {
     group_label: "zobir"
     type: count_distinct
-    drill_fields: [model]
+    drill_fields: [model, count]
     sql: ${model};;
   }
 }
