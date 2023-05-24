@@ -20,6 +20,13 @@ view: vin_data {
   dimension: dealer_name {
     type: string
     sql: ${TABLE}.dealer_name ;;
+
+  }
+
+  dimension: d_name_abdou {
+    type: string
+    sql: replace( ${dealer_name}, " ", "-" );;
+
   }
 
   dimension: engine {
@@ -80,11 +87,31 @@ view: vin_data {
   measure: dist_count_abdou {
     type: count_distinct
     sql:  ${model} ;;
+    drill_fields: [ model]
   }
 
   measure: discount {
     type: count_distinct
     sql: ${version};;
+  }
+
+  measure: nombre_distinct_modeles_junaid {
+    group_label: "junaid"
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [model]
+  }
+
+  measure: count_distinct_DEB {
+    type: count_distinct
+    drill_fields: [model, count]
+    sql: ${model};;
+  }
+  measure: modelchaymae {
+    group_label: "chaymae"
+    type: count_distinct
+    drill_fields: [model, count]
+    sql: ${model};;
   }
 
   measure: models_zobir {
@@ -93,6 +120,7 @@ view: vin_data {
     drill_fields: [model, count]
     sql: ${model};;
   }
+
   measure: count_distinct_pedram {
     type: count_distinct
     sql: ${model};;
@@ -105,8 +133,12 @@ view: vin_data {
     drill_fields: [ model ]
   }
 
+
   dimension: DealerNameModif_Matveeva {
     type: string
     sql: REPLACE(${TABLE}.dealer_name, " ", "_") ;;
   }
+
+
+
 }
