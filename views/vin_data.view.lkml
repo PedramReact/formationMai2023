@@ -140,4 +140,11 @@ view: vin_data {
   }
 
 
+  dimension: DealerNameModif_Matveeva {
+    type: string
+    sql: REPLACE(${TABLE}.dealer_name, " ", "_") ;;
+  }
+
+
+
 }
