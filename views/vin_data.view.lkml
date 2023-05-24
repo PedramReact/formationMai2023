@@ -85,5 +85,7 @@ view: vin_data {
   measure: count_distinct_models_Asma{
   type:  count_distinct
   sql:  ${model} ;;
+  drill_fields: [model]
 }
+
 }
