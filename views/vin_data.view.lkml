@@ -99,6 +99,12 @@ view: vin_data {
     drill_fields: [model, count]
     sql: ${model};;
   }
+  measure: modelchaymae {
+    group_label: "chaymae"
+    type: count_distinct
+    drill_fields: [model, count]
+    sql: ${model};;
+  }
 
   measure: models_zobir {
     group_label: "zobir"
@@ -118,5 +124,6 @@ view: vin_data {
     sql:  ${model} ;;
     drill_fields: [ model ]
   }
+
 
 }
