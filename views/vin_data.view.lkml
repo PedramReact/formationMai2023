@@ -88,12 +88,13 @@ view: vin_data {
   }
   measure: count_distinct_DEB {
     type: count_distinct
-    sql: ${model}
-    drill_fields: [model];;
+    sql: ${model};;
+    drill_fields: [model]
   }
-  measure: count_distinct {
+  measure: count_distinct_pedram {
     type: count_distinct
     sql: ${model};;
+    drill_fields: [version,brand,dealer_name]
   }
 
 }
