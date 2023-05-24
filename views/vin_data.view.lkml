@@ -20,6 +20,13 @@ view: vin_data {
   dimension: dealer_name {
     type: string
     sql: ${TABLE}.dealer_name ;;
+
+  }
+
+  dimension: d_name_abdou {
+    type: string
+    sql: replace( ${dealer_name}, " ", "-" );;
+
   }
 
   dimension: engine {
@@ -80,26 +87,57 @@ view: vin_data {
   measure: dist_count_abdou {
     type: count_distinct
     sql:  ${model} ;;
+    drill_fields: [ model]
   }
 
   measure: discount {
     type: count_distinct
     sql: ${version};;
   }
-  measure: count_distinct_DEB {
+
+  measure: nombre_distinct_modeles_junaid {
+    group_label: "junaid"
     type: count_distinct
     sql: ${model};;
     drill_fields: [model]
   }
-  measure: count_distinct_pedram {
+
+  measure: count_distinct_DEB {
     type: count_distinct
+    drill_fields: [model, count]
     sql: ${model};;
-    drill_fields: [version,brand,dealer_name]
   }
 
   dimension: dealer_name_DEB {
     type: string
     sql: REPLACE(dealer_name," ","_") ;;
   }
+
+  measure: modelchaymae {
+    group_label: "chaymae"
+    type: count_distinct
+    drill_fields: [model, count]
+    sql: ${model};;
+  }
+
+  measure: models_zobir {
+    group_label: "zobir"
+    type: count_distinct
+    drill_fields: [model, count]
+    sql: ${model};;
+  }
+
+  measure: count_distinct_pedram {
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [version,brand,dealer_name]
+  }
+
+  measure: uniq_model_matveeva {
+    type:  count_distinct
+    sql:  ${model} ;;
+    drill_fields: [ model ]
+  }
+
 
 }
