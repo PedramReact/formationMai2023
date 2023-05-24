@@ -133,7 +133,7 @@ view: vin_data {
     group_label: "zobir"
     type: string
     #sql: ${dealer_name};;
-    sql: REPLACE(${TABLE}.dealer_name_zobir, " ", "-");;
+    sql: REPLACE(${TABLE}.dealer_name, " ", "-");;
   }
 
 
