@@ -10,6 +10,7 @@ datagroup: formationmai2023_default_datagroup {
 
 persist_with: formationmai2023_default_datagroup
 
+#data_pareto_v2 {}
 
 #explore: pareto {}
 
