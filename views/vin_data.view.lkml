@@ -99,7 +99,7 @@ view: vin_data {
 
   dimension: dealer_name_DEB {
     type: string
-    sql: REPLACE(${TABLE}.dealer_name," ","_") ;;
+    sql: REPLACE(dealer_name," ","_") ;;
   }
 
 }
