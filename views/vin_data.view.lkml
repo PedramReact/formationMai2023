@@ -77,27 +77,9 @@ view: vin_data {
     drill_fields: [dealer_name]
   }
 
-  measure: dist_count_abdou {
-    type: count_distinct
-    sql:  ${model} ;;
-  }
-
   measure: discount {
     type: count_distinct
     sql: ${version};;
-  }
-
-  measure: nombre_distinct_modeles_junaid {
-    group_label: "junaid"
-    type: count_distinct
-    sql: ${model};;
-    drill_fields: [model]
-  }
-
-  measure: count_distinct_DEB {
-    type: count_distinct
-    drill_fields: [model, count]
-    sql: ${model};;
   }
 
   measure: models_zobir {
@@ -110,18 +92,7 @@ view: vin_data {
     group_label: "zobir"
     type: string
     #sql: ${dealer_name};;
-    sql: REPLACE(${dealer_name}, ‘-’, ‘ ‘);;
-  }
-  measure: count_distinct_pedram {
-    type: count_distinct
-    sql: ${model};;
-    drill_fields: [version,brand,dealer_name]
-  }
-
-  measure: uniq_model_matveeva {
-    type:  count_distinct
-    sql:  ${model} ;;
-    drill_fields: [ model ]
+    sql: REPLACE(${TABLE}.dealer_name_zobir, ‘’, ‘-‘);;
   }
 
 }
