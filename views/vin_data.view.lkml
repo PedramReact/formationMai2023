@@ -86,5 +86,6 @@ view: vin_data {
     group_label: "junaid"
     type: count_distinct
     sql: ${model};;
+    drill_fields: [model]
   }
 }
