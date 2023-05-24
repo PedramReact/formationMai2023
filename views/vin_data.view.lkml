@@ -80,4 +80,10 @@ view: vin_data {
     type: count_distinct
     sql: ${version};;
   }
+
+
+  measure: count_distinct_models_Asma{
+  type:  count_distinct
+  sql:  ${model} ;;
+}
 }
