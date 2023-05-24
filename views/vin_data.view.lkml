@@ -92,5 +92,12 @@ view: vin_data {
     type: count_distinct
     drill_fields: [model, count]
     sql: ${model};;
+    drill_fields: [model]
   }
+  measure: count_distinct_pedram {
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [version,brand,dealer_name]
+  }
+
 }
