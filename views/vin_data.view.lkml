@@ -92,7 +92,7 @@ view: vin_data {
   }
   measure: count_distinct_SHA {
     type: count_distinct
-    sql: ${model}
-    drill_fields: [model];;
+    sql: ${model};;
+    drill_fields: [model]
   }
 }
