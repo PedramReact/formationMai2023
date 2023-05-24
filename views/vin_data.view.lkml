@@ -77,7 +77,7 @@ view: vin_data {
     drill_fields: [dealer_name]
   }
 
-  measure: dist_count {
+  measure: dist_count_abdou {
     type: count_distinct
     sql:  ${model} ;;
   }
