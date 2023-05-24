@@ -76,8 +76,15 @@ view: vin_data {
     type: count
     drill_fields: [dealer_name]
   }
+
   measure: discount {
     type: count_distinct
     sql: ${version} ;;
   }
+
+  measure: count_models {
+    type: count_distinct
+    sql: ${model} ;;
+  }
+
 }
