@@ -275,7 +275,7 @@ view: vin_data {
     type: number
     #sql: COUNT_DISTINCT(IF(substring(${model}, 1, 1) = "C", ${model},NULL)) ;;
     sql:  (
-    count(distinct (case when substring(${model}, 1, 1) = "C" then 1 end))
+    count(case when substring(${model}, 1, 1) = "C" then 1 end)
     ) ;;
   }
 
