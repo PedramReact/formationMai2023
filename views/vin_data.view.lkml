@@ -270,6 +270,14 @@ view: vin_data {
               {% endif %} ;;
   }
 
+  measure: count_distinct_models_zobir {
+    group_label: "zobir"
+    type: number
+    sql:  (
+        count(DISTINCT(${model}))
+) ;;
+  }
+
   measure: count_distinct_models_C_zobir {
     group_label: "zobir"
     type: number
