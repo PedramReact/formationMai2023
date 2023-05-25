@@ -255,6 +255,7 @@ view: vin_data {
   }
 
   dimension: brand_logo_zobir {
+    group_label: "zobir"
     type: string
     sql: ${brand} ;;
     html:
