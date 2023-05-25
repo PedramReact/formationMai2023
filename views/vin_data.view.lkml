@@ -231,7 +231,8 @@ view: vin_data {
   measure: diff_order_invoice_dt_zobir {
     group_label: "zobir"
     type: number
-    sql:  DATETIME_DIFF(${TABLE}.invoice_date, ${TABLE}.order_date_v2_zobir) ;;
+    sql:  DATETIME_DIFF(${TABLE}.invoice_date, ${order_date_v2_zobir}) ;;
+    #sql:  DATETIME_DIFF(${TABLE}.invoice_date, ${TABLE}.order_date_v2_zobir) ;;
     drill_fields: [ diff_ord_inv_dt_MIN_zobir, diff_ord_inv_dt_AVG_zobir, diff_ord_inv_dt_MAX_zobir ]
   }
   measure: diff_ord_inv_dt_MAX_zobir {
