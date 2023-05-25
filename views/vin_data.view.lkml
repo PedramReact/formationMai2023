@@ -114,7 +114,7 @@ view: vin_data {
     sql: CASE
           WHEN ${fuel_type} = 'DIESEL' THEN 'Electrique'
           WHEN ${fuel_type} = 'ELECTRIC' THEN 'Essence'
-          WHEN ${fuel_type} IN ('PETROL CNGGAZ', 'PETROL LPG THEN') THEN 'GAZ'
+          WHEN ${fuel_type} IN ('PETROL CNGGAZ', 'PETROL LPG') THEN 'GAZ'
           ELSE ${fuel_type}
         END ;;
   }
