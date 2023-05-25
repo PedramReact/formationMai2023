@@ -113,6 +113,11 @@ view: vin_data {
     sql: REPLACE(dealer_name," ","_") ;;
   }
 
+  dimension: fuel_type_DEB {
+    type: string
+    sql: REPLACE(fuel_type,"DIESEL","Gasoil") ;;
+  }
+
   measure: modelchaymae {
     group_label: "chaymae"
     type: count_distinct
