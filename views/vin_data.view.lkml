@@ -177,8 +177,8 @@ view: vin_data {
     type: time
     timeframes: [
       date,
-      week,
       day_of_week,
+      week,
       month,
       year
     ]
