@@ -172,6 +172,25 @@ view: vin_data {
     sql: concat(${model}, "-", ${version})  ;;
   }
 
+  dimension_group: order_date_zobir {
+    group_label: "zobir"
+    type: time
+    timeframes: [
+      date,
+      week,
+      day_of_week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+
+
+
+
   dimension: DealerNameModif_Matveeva {
     type: string
     sql: REPLACE(${TABLE}.dealer_name, " ", "_") ;;
