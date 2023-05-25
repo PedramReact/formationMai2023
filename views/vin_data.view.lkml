@@ -187,7 +187,11 @@ view: vin_data {
     sql: ${TABLE}.order_date ;;
   }
 
-
+  dimension: invoice_date_formatted_zobir {
+    group_label: "zobir"
+    sql: ${TABLE}.invoice_date} ;;
+    html: {{ rendered_value | date: "%A, %B %e, %YY" }};;
+  }
 
 
   dimension: DealerNameModif_Matveeva {
