@@ -270,7 +270,7 @@ view: vin_data {
               {% endif %} ;;
   }
 
-  measure: count_distinct_models_zobir {
+  measure: nombre_distinct_models_zobir {
     group_label: "zobir"
     type: number
     sql:  (
