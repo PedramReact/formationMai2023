@@ -187,7 +187,11 @@ view: vin_data {
     sql: ${TABLE}.order_date ;;
   }
 
-
+  dimension: order_date {
+    group_label: "zobir"
+    type: string
+    sql: ${TABLE}.order_date ;;
+  }
 
 
 
