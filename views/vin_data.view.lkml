@@ -198,8 +198,63 @@ view: vin_data {
   dimension: invoice_date_formatted_zobir {
     group_label: "zobir"
     sql: ${TABLE}.invoice_date ;;
-    html: {{ rendered_value | date: "%A, %d %b %e, %y" }};;
+    html: {{ rendered_value | date: "%A %d %b %y" }};;
   }
+
+  measure: catalogue_price_avg_zobir {
+    group_label: "zobir"
+    type: average
+    sql: ${TABLE}.catalogue_price ;;
+    value_format_name: usd
+  }
+
+  measure: catalogue_price_max_zobir {
+    group_label: "zobir"
+    type: max
+    sql: ${TABLE}.catalogue_price ;;
+    value_format_name: usd
+  }
+  measure: catalogue_price_min_zobir {
+    group_label: "zobir"
+    type: min
+    sql: ${TABLE}.catalogue_price ;;
+    value_format_name: usd
+  }
+
+  dimension: order_date_v2_zobir {
+    group_label: "zobir"
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+  measure: diff_order_invoice_dt_zobir {
+    group_label: "zobir"
+    type: number
+    sql:  DATETIME_DIFF(${TABLE}.invoice_date, ${TABLE}.order_date_v2_zobir) ;;
+    drill_fields: [ diff_ord_inv_dt_MIN_zobir, diff_ord_inv_dt_AVG_zobir, diff_ord_inv_dt_MAX_zobir ]
+  }
+  measure: diff_ord_inv_dt_MAX_zobir {
+    group_label: "zobir"
+    type: max
+    sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
+    #value_format_name: usd
+  }
+  measure: diff_ord_inv_dt_MIN_zobir {
+    group_label: "zobir"
+    type: min
+    sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
+    #value_format_name: usd
+  }
+  measure: diff_ord_inv_dt_AVG_zobir {
+    group_label: "zobir"
+    type: average
+    sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
+    #value_format_name: usd
+  }
+
+
+
 
 
   dimension: DealerNameModif_Matveeva {
