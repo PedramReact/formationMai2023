@@ -129,6 +129,14 @@ view: vin_data {
     sql: CONCAT(model,"-",version);;
   }
 
+  dimension_group: order_date_DEB {
+    group_label: "order_date_DEB"
+    type: time
+    timeframes: [date, day_of_week, month, week, year]
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
   measure: modelchaymae {
     group_label: "chaymae"
     type: count_distinct
