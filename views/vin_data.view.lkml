@@ -165,7 +165,7 @@ view: vin_data {
     ) ;;
     #sql: REPLACE(${TABLE}.fuel_type, " ", "-");;
     }
-  measure: Concat_Model_Version_zobir {
+  dimension: Concat_Model_Version_zobir {
     group_label: "zobir"
     type: string
     drill_fields: [brand, model, count]
