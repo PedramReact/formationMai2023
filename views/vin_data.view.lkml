@@ -254,6 +254,21 @@ view: vin_data {
     #value_format_name: usd
   }
 
+  dimension: brand_logo_zobir {
+    type: string
+    sql: ${brand} ;;
+    html:
+              {% if brand._value == "ALPINE" %}
+              <img src="https://logo-marque.com/wp-content/uploads/2021/08/Alpine-Logo-650x366.png" height="170" width="255">
+              {% elsif brand._value == "RENAULT" %}
+              <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-650x366.png" height="170" width="255">
+              {% elsif brand._value == "DACIA" %}
+              <img src="https://logo-marque.com/wp-content/uploads/2021/06/Dacia-Logo-650x366.jpg" height="170" width="255">
+              {% else %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
+              {% endif %} ;;
+  }
+
 
 
 
