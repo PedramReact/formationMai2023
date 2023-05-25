@@ -107,7 +107,7 @@ view: vin_data {
     group_label: "DEB"
     type: count_distinct
     drill_fields: [model, count]
-    sql: ${model};;
+    sql: model;;
   }
 
   dimension: dealer_name_DEB {
@@ -120,6 +120,13 @@ view: vin_data {
     group_label: "DEB"
     type: string
     sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
+  }
+
+  dimension: model_version_DEB {
+    group_label: "DEB"
+    type: string
+    drill_fields: [brand, model, version, catalogue_price]
+    sql: CONCAT(model,"-",version);;
   }
 
   measure: modelchaymae {
