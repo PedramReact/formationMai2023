@@ -197,8 +197,8 @@ view: vin_data {
 
   dimension: invoice_date_formatted_zobir {
     group_label: "zobir"
-    sql: ${TABLE}.invoice_date} ;;
-    html: {{ rendered_value | date: "%A, %B %e, %YY" }};;
+    sql: ${TABLE}.invoice_date ;;
+    html: {{ rendered_value | date: "%A, %d %b %e, %y" }};;
   }
 
 
