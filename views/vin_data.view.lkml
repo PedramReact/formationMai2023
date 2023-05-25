@@ -273,7 +273,10 @@ view: vin_data {
   measure: count_distinct_models_C_zobir {
     group_label: "zobir"
     type: number
-    sql: COUNT_DISTINCT(IF(substring(${model}, 1, 1) = "C", ${model},NULL)) ;;
+    #sql: COUNT_DISTINCT(IF(substring(${model}, 1, 1) = "C", ${model},NULL)) ;;
+    sql:  (
+    select count(distinct (case when substring(${model}, 1, 1) = "C" then 1 end))
+    ) ;;
   }
 
 # COUNT_DISTINCT(IF(Category="Stationery", Transaction ID,NULL))
