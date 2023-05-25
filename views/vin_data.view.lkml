@@ -90,6 +90,7 @@ view: vin_data {
     drill_fields: [ model]
   }
 
+
   measure: discount {
     type: count_distinct
     sql: ${version};;
@@ -125,6 +126,7 @@ view: vin_data {
     sql: ${model};;
   }
 
+
   measure: models_zobir {
     group_label: "zobir"
     type: count_distinct
@@ -132,16 +134,11 @@ view: vin_data {
     sql: ${model};;
   }
 
-  measure: count_distinct_pedram {
-    type: count_distinct
-    sql: ${model};;
-    drill_fields: [version,brand,dealer_name]
-  }
-
-  measure: uniq_model_matveeva {
-    type:  count_distinct
-    sql:  ${model} ;;
-    drill_fields: [ model ]
+  dimension: dealer_name_zobir {
+    group_label: "zobir"
+    type: string
+    #sql: ${dealer_name};;
+    sql: REPLACE(${TABLE}.dealer_name, " ", "-");;
   }
 
 
