@@ -173,7 +173,7 @@ view: vin_data {
   }
 
   dimension_group: order_date_zobir {
-    group_label: "zobir"
+    #group_label: "zobir"
     type: time
     timeframes: [
       date,
