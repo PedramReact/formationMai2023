@@ -145,8 +145,7 @@ view: vin_data {
         WHEN ${TABLE}.fuel_type = "PETROL" THEN "Essence"
         WHEN ${TABLE}.fuel_type = "PETROL ONGAZ" THEN "GAZ"
         WHEN ${TABLE}.fuel_type = "PETROL LPG" THEN "GAZ"
-        WHEN ${TABLE}.fuel_type = "" THEN "Other"
-        ELSE "inconnu"
+        ELSE "Other"
        END
     ) ;;
     #sql: REPLACE(${TABLE}.fuel_type, " ", "-");;
