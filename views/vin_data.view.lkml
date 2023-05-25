@@ -135,6 +135,22 @@ view: vin_data {
     #sql: ${dealer_name};;
     sql: REPLACE(${TABLE}.dealer_name, " ", "-");;
   }
+  dimension: Type_de_Carburant_zobir {
+    group_label: "zobir"
+    type: string
+    sql:(
+      CASE
+        WHEN ${TABLE}.fuel_type = "DIESEL" THEN "Gasoil"
+        WHEN ${TABLE}.fuel_type = "ELECTRIC" THEN "Electrique"
+        WHEN ${TABLE}.fuel_type = "PETROL" THEN "Essence"
+        WHEN ${TABLE}.fuel_type = "PETROL ONGAZ" THEN "GAZ"
+        WHEN ${TABLE}.fuel_type = "PETROL LPG" THEN "GAZ"
+        WHEN ${TABLE}.fuel_type = "" THEN "Other"
+        ELSE "inconnu"
+       END
+    ) ;;
+    #sql: REPLACE(${TABLE}.fuel_type, " ", "-");;
+    }
 
 
   dimension: DealerNameModif_Matveeva {
