@@ -275,13 +275,15 @@ view: vin_data {
     type: number
     #sql: COUNT_DISTINCT(IF(substring(${model}, 1, 1) = "C", ${model},NULL)) ;;
     sql:  (
-        count(COUNT_DISTINCT(case when substring(${model}, 1, 1) = "C" then ${model} end))
+        count(DISTINCT(case when substring(${model}, 1, 1) = "C" then ${model} end))
 ) ;;
   }
 #count(COUNT_DISTINCT(case when substring(${model}, 1, 1) = "C" then 1 end))
 # count(COUNT_DISTINCT(case when substring(${model}, 1, 1) = "C" then 1 end))
 # COUNT_DISTINCT(IF(Category="Stationery", Transaction ID,NULL))
 # substring(${model}, 1, 1) = “C”
+# count(distinct
+
 
 
   dimension: DealerNameModif_Matveeva {
