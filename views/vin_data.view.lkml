@@ -104,14 +104,22 @@ view: vin_data {
   }
 
   measure: count_distinct_DEB {
+    group_label: "DEB"
     type: count_distinct
     drill_fields: [model, count]
     sql: ${model};;
   }
 
   dimension: dealer_name_DEB {
+    group_label: "DEB"
     type: string
     sql: REPLACE(dealer_name," ","_") ;;
+  }
+
+  dimension: fuel_type_DEB {
+    group_label: "DEB"
+    type: string
+    sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
   }
 
   measure: modelchaymae {
