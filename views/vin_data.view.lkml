@@ -87,7 +87,6 @@ view: vin_data {
     sql: ${version};;
   }
 
-
   measure: count_distinct_DEB {
     type: count_distinct
     sql: ${model};;
@@ -104,8 +103,19 @@ view: vin_data {
     drill_fields: [model]
   }
 
-  dimension: Modified_Dealer_name{
+  dimension: Modified_Dealer_name_asma {
     type: string
     sql:  replace(${dealer_name}, " ", "_");;
+  }
+
+
+  dimension:  Modified_fuel_type_asma {
+    type: string
+    sql: CASE
+          WHEN ${fuel_type} = 'DIESEL' THEN 'Electrique'
+          WHEN ${fuel_type} = 'ELECTRIC' THEN 'Essence'
+          WHEN ${fuel_type} IN ('PETROL CNGGAZ', 'PETROL LPG THEN') THEN 'GAZ'
+          ELSE ${fuel_type}
+        END ;;
   }
 }
