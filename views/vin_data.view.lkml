@@ -292,7 +292,12 @@ view: vin_data {
 # substring(${model}, 1, 1) = “C”
 # count(distinct
 
-
+  dimension: Concat_Brand_Carburant_zobir {
+    group_label: "zobir"
+    type: string
+    drill_fields: [count]
+    sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
+  }
 
   dimension: DealerNameModif_Matveeva {
     type: string
