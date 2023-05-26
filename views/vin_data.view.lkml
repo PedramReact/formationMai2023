@@ -303,6 +303,12 @@ view: vin_data {
     ;;
   }
 
+ dimension: Model_versionCQAS {
+   label: "CONCAT_CQAS"
+   type: string
+   drill_fields: [brand, model, version]
+   sql: concat(${model},"-", ${version});;
+ }
 
 
 }
