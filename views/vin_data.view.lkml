@@ -298,6 +298,19 @@ view: vin_data {
     drill_fields: [count]
     sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
   }
+  measure: Brand_Carb_Count_zobir {
+    group_label: "zobir"
+    type: count_distinct
+    drill_fields: [Concat_Brand_Carburant_zobir, count]
+    sql: ${Concat_Brand_Carburant_zobir};;
+  }
+
+
+
+
+
+
+
 
   dimension: DealerNameModif_Matveeva {
     type: string
