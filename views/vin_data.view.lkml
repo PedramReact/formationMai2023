@@ -310,8 +310,8 @@ view: vin_data {
    sql: concat(${model},"-", ${version});;
  }
 
- dimension: formatDateCQAS {
-  group_label: "CQAS" label: "FormatDate"
+ dimension: Order_date_CQAS {
+  group_label: "CQAS" label: "Order_date"
    #type: date
    sql: ${invoice_date};;
   html: {{rendered_value | date: "%A,  %e, %b,, %y"}} ;;
@@ -340,6 +340,31 @@ measure: Min_Catal_price {
     value_format: "\"€\"0.0"
 
   }
+  #####09
+ #measure: Diff_Date {
+  #group_label: "CQA" label: "DifDate"
+  #type: date
+  #sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_date_CQAS}) ;;
+
+# }
+  #####10
+  dimension: Logo_Brand_CQAS  {
+    group_label: "CQAS" label: "LogoBrand"
+    sql: ${brand} ;;
+    html:
+        {% case value %}
+    {% when "ALPINE"  %}
+     <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
+    {% when "DACIA"  %}
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41"">
+    {% else %}
+     <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
+    {% endcase %};;
+  }
+
+  #####11
+
+
 
 
 
