@@ -305,33 +305,21 @@ view: vin_data {
     sql: ${order_id};;
   }
 
-
-
-
-
-
-
-
-  dimension: DealerNameModif_Matveeva {
-    type: string
-    sql: REPLACE(${TABLE}.dealer_name, " ", "_") ;;
+  measure: Brand_Carb_Count_MAX_zobir {
+    group_label: "zobir"
+    type: max
+    sql: ${TABLE}.order_id ;;
   }
-
-  dimension: Fuel_type_CQAS{
-    label: "CQAS"
-    type: string
-    sql: (case
-      when ${TABLE}.fuel_type = "DIESEL" then "Gasoil"
-      when ${TABLE}.fuel_type = "ELECTRIC" then "Electrique"
-      when ${TABLE}.fuel_type = "PETROL" then "Essence"
-      when ${TABLE}.fuel_type = "PETROL CNGGAZ" then "GAZ"
-      when ${TABLE}.fuel_type = "PETROL LPG" then "GAZ"
-      else "null"
-      end
-      )
-    ;;
+  measure: Brand_Carb_Count_MIN_zobir {
+    group_label: "zobir"
+    type: min
+    sql: ${TABLE}.order_id ;;
   }
-
-
+  measure: Brand_Carb_Count_AVG_zobir {
+    group_label: "zobir"
+    type: average
+    sql: ${TABLE}.order_id  ;;
+    #sql: ${Brand_Carb_Count_zobir} ;;
+  }
 
 }
