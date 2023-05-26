@@ -289,7 +289,7 @@ view: vin_data {
   }
 
   dimension: Fuel_type_CQAS{
-    label: "CQAS"
+    group_label: "CQAS" label: "Fuel_type"
     type: string
     sql: (case
       when ${TABLE}.fuel_type = "DIESEL" then "Gasoil"
@@ -304,11 +304,21 @@ view: vin_data {
   }
 
  dimension: Model_versionCQAS {
-   label: "CONCAT_CQAS"
+  group_label: "CQAS" label: "CONCAT_Medel_Version"
    type: string
    drill_fields: [brand, model, version]
    sql: concat(${model},"-", ${version});;
  }
+
+ dimension: formatDateCQAS {
+  group_label: "CQAS" label: "FormatDate"
+   #type: date
+   sql: ${invoice_date};;
+  html: {{rendered_value | date: "%A, %B, %e, %Y"}} ;;
+
+ }
+
+
 
 
 }
