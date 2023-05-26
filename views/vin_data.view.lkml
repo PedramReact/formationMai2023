@@ -314,9 +314,32 @@ view: vin_data {
   group_label: "CQAS" label: "FormatDate"
    #type: date
    sql: ${invoice_date};;
-  html: {{rendered_value | date: "%A, %B, %e, %Y"}} ;;
+  html: {{rendered_value | date: "%A,  %e, %b,, %y"}} ;;
 
  }
+
+measure: Min_Catal_price {
+  group_label: "CQA" label: "MIN"
+  type: min
+  sql: ${catalogue_price} ;;
+  value_format: "\"€\"0.0"
+
+}
+  measure: Max_Catal_price {
+    group_label: "CQA" label: "MAX"
+    type: max
+    sql: ${catalogue_price} ;;
+    value_format: "\"€\"0.0"
+
+  }
+
+  measure: Avg_Catal_price {
+   group_label: "CQA" label: "AVG"
+    type: average
+    sql: ${catalogue_price} ;;
+    value_format: "\"€\"0.0"
+
+  }
 
 
 
