@@ -317,6 +317,21 @@ view: vin_data {
     sql: REPLACE(${TABLE}.dealer_name, " ", "_") ;;
   }
 
+  dimension: Fuel_type_CQAS{
+    label: "CQAS"
+    type: string
+    sql: (case
+      when ${TABLE}.fuel_type = "DIESEL" then "Gasoil"
+      when ${TABLE}.fuel_type = "ELECTRIC" then "Electrique"
+      when ${TABLE}.fuel_type = "PETROL" then "Essence"
+      when ${TABLE}.fuel_type = "PETROL CNGGAZ" then "GAZ"
+      when ${TABLE}.fuel_type = "PETROL LPG" then "GAZ"
+      else "null"
+      end
+      )
+    ;;
+  }
+
 
 
 }
