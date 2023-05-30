@@ -130,12 +130,80 @@ view: vin_data {
   }
 
   dimension_group: order_date_DEB {
-    group_label: "order_date_DEB"
     type: time
     timeframes: [date, day_of_week, month, week, year]
+    convert_tz: no
     datatype: date
     sql: ${TABLE}.order_date ;;
   }
+
+  dimension: invoice_DEB {
+    group_label: "DEB"
+    type: date
+    sql: ${invoice_date} ;;
+    html: {{rendered_value | date: "%A %e %b %Y"}} ;;
+  }
+
+  measure: min_catalogue_price_DEB {
+    group_label: "DEB"
+    type: min
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+
+  measure: max_catalogue_price_DEB {
+    group_label: "DEB"
+    type: max
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+
+  measure: avg_catalogue_price_DEB {
+    group_label: "DEB"
+    type: average
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+
+  dimension: diff_invoice_order_DEB {
+    group_label: "DEB"
+    type: number
+    sql: DATE_DIFF(${invoice_date},${order_date_DEB_date}, day) ;;
+  }
+
+  measure: min_diff_DEB {
+    group_label: "DEB"
+    type: min
+    sql: ${diff_invoice_order_DEB} ;;
+  }
+
+  measure: max_diff_DEB {
+    group_label: "DEB"
+    type: max
+    sql: ${diff_invoice_order_DEB} ;;
+  }
+
+  measure: avg_diff_DEB {
+    group_label: "DEB"
+    type: average
+    sql: ${diff_invoice_order_DEB} ;;
+  }
+
+  dimension: logo_DEB {
+    group_label: "DEB"
+    type: string
+    sql: ${brand} ;;
+    html: {% if brand._value == "RENAULT" %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg" height="75" width="75">
+              {% elsif brand._value == "ALPINE" %}
+              <img src="https://fr.wikipedia.org/wiki/Alpine_%28automobile%29#/media/Fichier:Alpine.svg" height="75" width="75">
+              {% elsif brand._value == "DACIA" %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Dacia-logo.png" height="75" width="75">
+              {% else %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
+              {% endif %} ;;
+  }
+
 
   measure: modelchaymae {
     group_label: "chaymae"
