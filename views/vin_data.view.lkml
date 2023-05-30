@@ -288,6 +288,8 @@ view: vin_data {
     sql: REPLACE(${TABLE}.dealer_name, " ", "_") ;;
   }
 
+
+  #####04
   dimension: Fuel_type_CQAS{
     group_label: "CQAS" label: "Fuel_type"
     type: string
@@ -303,28 +305,38 @@ view: vin_data {
     ;;
   }
 
+ #####05
  dimension: Model_versionCQAS {
   group_label: "CQAS" label: "CONCAT_Medel_Version"
    type: string
    drill_fields: [brand, model, version]
    sql: concat(${model},"-", ${version});;
  }
+#####06
+  dimension: Order_DateC {
+    group_label: "CQAS" label: "Order_Date"
+    type: date
+    sql: CAST(${order} as date) ;;
 
- dimension: Order_date_CQAS {
-  group_label: "CQAS" label: "Order_date"
+  }
+
+#####07
+ dimension: Format_date {
+  group_label: "CQAS" label: "new format date"
    #type: date
    sql: ${invoice_date};;
   html: {{rendered_value | date: "%A,  %e, %b,, %y"}} ;;
 
  }
-
-measure: Min_Catal_price {
+#####08
+ measure: Min_Catal_price {
   group_label: "CQA" label: "MIN"
   type: min
   sql: ${catalogue_price} ;;
   value_format: "\"€\"0.0"
 
 }
+#####08
   measure: Max_Catal_price {
     group_label: "CQA" label: "MAX"
     type: max
@@ -332,7 +344,7 @@ measure: Min_Catal_price {
     value_format: "\"€\"0.0"
 
   }
-
+  #####08
   measure: Avg_Catal_price {
    group_label: "CQA" label: "AVG"
     type: average
@@ -347,6 +359,8 @@ measure: Min_Catal_price {
   #sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_date_CQAS}) ;;
 
 # }
+
+
   #####10
   dimension: Logo_Brand_CQAS  {
     group_label: "CQAS" label: "LogoBrand"
@@ -361,12 +375,5 @@ measure: Min_Catal_price {
      <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
     {% endcase %};;
   }
-
-  #####11
-
-
-
-
-
 
 }
