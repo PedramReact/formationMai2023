@@ -194,11 +194,11 @@ view: vin_data {
     type: string
     sql: ${brand} ;;
     html: {% if brand._value == "RENAULT" %}
-              <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg" height="75" width="75">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg" height="80" width="80">
               {% elsif brand._value == "ALPINE" %}
-              <img src="https://fr.wikipedia.org/wiki/Alpine_%28automobile%29#/media/Fichier:Alpine.svg" height="75" width="75">
+              <img src="https://upload.wikimedia.org/wikipedia/fr/b/b7/Alpine_F1_Team_2021_Logo.svg" height="80" width="80">
               {% elsif brand._value == "DACIA" %}
-              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Dacia-logo.png" height="75" width="75">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Dacia-logo.png" height="80" width="80">
               {% else %}
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
               {% endif %} ;;
