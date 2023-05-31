@@ -400,10 +400,21 @@ view: vin_data {
    sql: concat(${model},"-", ${version});;
  }
 #####06
-  dimension: Order_DateC {
+  dimension_group: Order_DateC {
     group_label: "CQAS" label: "Order_Date"
-    type: date
+
+    type: time
     sql: CAST(${order_date_v2_zobir} as date) ;;
+
+    timeframes: [
+      date,
+      day_of_week,
+      month,
+      week,
+      year
+    ]
+    datatype: date
+
 
   }
 
@@ -412,9 +423,10 @@ view: vin_data {
   group_label: "CQAS" label: "new format date"
    #type: date
    sql: ${invoice_date};;
-  html: {{rendered_value | date: "%A,  %e, %b,, %y"}} ;;
+  html: {{rendered_value | date: "%A,  %e, %b, %y"}} ;;
 
  }
+
 #####08
  measure: Min_Catal_price {
   group_label: "CQA" label: "MIN"
@@ -441,12 +453,12 @@ view: vin_data {
 
   }
   #####09
- #measure: Diff_Date {
-  #group_label: "CQA" label: "DifDate"
-  #type: date
-  #sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_date_CQAS}) ;;
+ measure: Diff_Date {
+  group_label: "CQA" label: "DifDate"
+  type: number
+  sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_DateC_date}.days) ;;
 
-# }
+ }
 
 ####
 
