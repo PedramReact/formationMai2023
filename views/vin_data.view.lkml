@@ -22,13 +22,6 @@ view: vin_data {
     sql: ${TABLE}.dealer_name ;;
 
   }
-
-  dimension: d_name_abdou {
-    type: string
-    sql: replace( ${dealer_name}, " ", "-" );;
-
-  }
-
   dimension: engine {
     type: string
     sql: ${TABLE}.engine ;;
@@ -83,67 +76,10 @@ view: vin_data {
     type: count
     drill_fields: [dealer_name]
   }
-
-  measure: dist_count_abdou {
-    type: count_distinct
-    sql:  ${model} ;;
-    drill_fields: [ model]
-  }
-
-
   measure: discount {
     type: count_distinct
     sql: ${version};;
   }
-
-  measure: nombre_distinct_modeles_junaid {
-    group_label: "junaid"
-    type: count_distinct
-    sql: ${model};;
-    drill_fields: [model]
-  }
-
-  measure: count_distinct_DEB {
-    group_label: "DEB"
-    type: count_distinct
-    drill_fields: [model, count]
-    sql: model;;
-  }
-
-  dimension: dealer_name_DEB {
-    group_label: "DEB"
-    type: string
-    sql: REPLACE(dealer_name," ","_") ;;
-  }
-
-  dimension: fuel_type_DEB {
-    group_label: "DEB"
-    type: string
-    sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
-  }
-
-  dimension: model_version_DEB {
-    group_label: "DEB"
-    type: string
-    drill_fields: [brand, model, version, catalogue_price]
-    sql: CONCAT(model,"-",version);;
-  }
-
-  dimension_group: order_date_DEB {
-    group_label: "order_date_DEB"
-    type: time
-    timeframes: [date, day_of_week, month, week, year]
-    datatype: date
-    sql: ${TABLE}.order_date ;;
-  }
-
-  measure: modelchaymae {
-    group_label: "chaymae"
-    type: count_distinct
-    drill_fields: [model, count]
-    sql: ${model};;
-  }
-
 
   measure: models_zobir {
     group_label: "zobir"
@@ -298,42 +234,5 @@ view: vin_data {
     #drill_fields: [count]
     sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
   }
-  measure: Brand_Carb_Count_zobir {
-    group_label: "zobir"
-    type: count_distinct
-    drill_fields: [Concat_Brand_Carburant_zobir, count]
-    sql: ${order_id};;
-  }
-
-  measure: Brand_Carb_Count_MAX_zobir {
-    group_label: "zobir"
-    type: max
-    sql: ${TABLE}.order_id ;;
-  }
-  measure: Brand_Carb_Count_MIN_zobir {
-    group_label: "zobir"
-    type: min
-    sql: ${TABLE}.order_id ;;
-  }
-  measure: Brand_Carb_Count_AVG_zobir {
-    group_label: "zobir"
-    type: average
-    sql: ${TABLE}.order_id  ;;
-    #sql: ${Brand_Carb_Count_zobir} ;;
-  }
-
-
-
-
-
-
- dimension: Model_versionCQAS {
-   label: "CONCAT_CQAS"
-   type: string
-   drill_fields: [brand, model, version]
-   sql: concat(${model},"-", ${version});;
- }
-
-
 
 }
