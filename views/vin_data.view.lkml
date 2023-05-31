@@ -204,6 +204,15 @@ view: vin_data {
               {% endif %} ;;
   }
 
+  parameter: grain_DEB {
+    group_label: "DEB"
+    type: string
+    allowed_value: {value:"Original Value"}
+    allowed_value: {value:"Year"}
+    allowed_value: {value:"Month"}
+    allowed_value: {value:"Week"}
+    }
+
 
   measure: modelchaymae {
     group_label: "chaymae"
