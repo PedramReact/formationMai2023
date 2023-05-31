@@ -99,10 +99,7 @@ view: vin_data {
     sql: ${TABLE}.model ;;
   }
 
-  dimension: order {
-    type: string
-    sql: ${TABLE}.order_date ;;
-  }
+
 
   dimension: order_date {
     type: string
@@ -216,6 +213,21 @@ view: vin_data {
     sql: ${model};;
   }
 
+  measure: count_distinct_pedram {
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [version,brand,dealer_name]
+  }
+
+  measure: uniq_model_matveeva {
+    group_label: "anastasiia"
+    type:  count_distinct
+    sql:  ${model} ;;
+    drill_fields: [ model, count ]
+  }
+
+
+  dimension: DealerNameModif_Matveeva {}
   dimension: dealer_name_zobir {
     group_label: "zobir"
     type: string
@@ -386,10 +398,21 @@ view: vin_data {
    sql: concat(${model},"-", ${version});;
  }
 #####06
-  dimension: Order_DateC {
+  dimension_group: Order_DateC {
     group_label: "CQAS" label: "Order_Date"
-    type: date
-    sql: CAST(${order} as date) ;;
+
+    type: time
+    sql: CAST(${order_date_v2_zobir} as date) ;;
+
+    timeframes: [
+      date,
+      day_of_week,
+      month,
+      week,
+      year
+    ]
+    datatype: date
+
 
   }
 
@@ -398,9 +421,10 @@ view: vin_data {
   group_label: "CQAS" label: "new format date"
    #type: date
    sql: ${invoice_date};;
-  html: {{rendered_value | date: "%A,  %e, %b,, %y"}} ;;
+  html: {{rendered_value | date: "%A,  %e, %b, %y"}} ;;
 
  }
+
 #####08
  measure: Min_Catal_price {
   group_label: "CQA" label: "MIN"
@@ -427,12 +451,33 @@ view: vin_data {
 
   }
   #####09
- #measure: Diff_Date {
-  #group_label: "CQA" label: "DifDate"
-  #type: date
-  #sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_date_CQAS}) ;;
+ measure: Diff_Date {
+  group_label: "CQA" label: "DifDate"
+  type: number
+  sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_DateC_date}.days) ;;
 
-# }
+ }
+
+####
+
+  #####9 amal
+  #exo 9
+  dimension: difference_date {
+    type: number
+    sql: date_diff ( ${invoice_date}. ${order_date_zobir_date}, day) ;;
+  }
+  measure: min_difference_date {
+    type: min
+    sql: ${difference_date} ;;
+  }
+  measure: max_difference_date {
+    type: max
+    sql: ${difference_date} ;;
+  }
+  measure: avg_difference_date {
+    type: average
+    sql: ${difference_date} ;;
+  }
 
  #####10
   dimension: Logo_Brand_CQAS  {
@@ -443,12 +488,119 @@ view: vin_data {
     {% when "ALPINE"  %}
      <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
     {% when "DACIA"  %}
-     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41"">
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41">
     {% else %}
      <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
     {% endcase %};;
   }
 
 
+    dimension: Logo_Brand_AMAL  {
+      group_label: "AMAL" label: "LogoBrand"
+      sql: ${brand} ;;
+      html:
+        {% case value %}
+    {% when "ALPINE"  %}
+     <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
+    {% when "DACIA"  %}
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41">
+    {% else %}
+     <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
+    {% endcase %};;
+    }
+
+  dimension: Type_de_carburant_matveeva {
+    type:  string
+    sql:
+    CASE
+    WHEN ${fuel_type} = "DIESEL" THEN "Gasoil"
+    WHEN ${fuel_type} = "ELECTRIC" THEN "Electrique"
+    WHEN ${fuel_type} = "PETROL" THEN "Essence"
+    WHEN ${fuel_type} = "PETROL CNGGAZ" THEN "GAZ"
+    WHEN ${fuel_type} = "PETROL LPG" THEN "GAZ"
+    END;;
+  }
+
+  dimension: concat_model_version_matveeva {
+    group_label: "anastasiia"
+    type:  string
+    sql: CONCAT(model, "-", version) ;;
+    drill_fields: [brand, model, version, catalogue_price]
+  }
+
+  dimension_group: order_pedram {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+  dimension: new_invoice {
+    group_label: "anastasiia"
+    sql: ${invoice_date} ;;
+    html: {{rendered_value | date:"%A %d %b %y"}} ;;
+  }
+
+  measure: min_price_matveeva {
+    group_label: "anastasiia"
+    type:  min
+    value_format: "$#.0"
+    sql:  ${catalogue_price} ;;
+  }
+
+  measure: max_price_matveeva {
+    group_label: "anastasiia"
+    type:  max
+    value_format: "$#.0"
+    sql:  ${catalogue_price} ;;
+  }
+
+  measure: avg_price_matveeva {
+    group_label: "anastasiia"
+    type:  average
+    value_format: "$#.0"
+    sql:  ${catalogue_price} ;;
+  }
+
+  dimension: dif_date_matveeva {
+    sql: DATE_DIFF(${invoice_date}, ${order_date}, day) ;;
+  }
+
+  measure: min_dif_matveeva {
+    group_label: "anastasiia"
+    type:  min
+    sql:  ${dif_date_matveeva} ;;
+  }
+
+  measure: max_dif_matveeva {
+    group_label: "anastasiia"
+    type:  max
+    sql:  ${dif_date_matveeva} ;;
+  }
+
+  measure: avg_dif_matveeva {
+    group_label: "anastasiia"
+    type:  average
+    sql:  ${dif_date_matveeva} ;;
+  }
+
+  dimension:  brand_logo_matveeva{
+    sql: ${brand} ;;
+    html: {% if brand._value == "RENAULT" %}
+    <img src = "https://www.largus.fr/images/styles/max_1300x1300/public/images/logo-renault-fond-noir.jpg?itok=RQr9UQLF" height="170" width="255">
+    {% elsif brand._value == "DACIA" %}
+    <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Dacia-logo.png/900px-Dacia-logo.png" height="170" width="255">
+    {% else %}
+    <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/1/1f/Alpine.svg/langfr-420px-Alpine.svg.png" height="170" width="255">
+    {% endif %} ;;
+  }
 
 }
