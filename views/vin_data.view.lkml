@@ -388,7 +388,7 @@ view: vin_data {
     sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
   }
 
-  parameter: Granularite_dt_zobir {
+  parameter: Order_date_gran_zobir {
     group_label: "zobir"
     type: string
     allowed_value: {value:"year"}
@@ -397,16 +397,12 @@ view: vin_data {
 
   dimension: order_dt_gran_zobir {
     group_label: "zobir"
-    label_from_parameter: Granularite_dt_zobir
+    label_from_parameter: Order_date_gran_zobir
     type: date_year
     sql:
           case
             when  {% parameter Order_date_gran_zobir  %} = "year" THEN date_trunc(year, ${order_date_zobir_year}::date )
             when  {% parameter Order_date_gran_zobir  %} = "month" THEN date_trunc(month, ${order_date_zobir_month}::date )
-
-
-            order_date_zobir
-
          else null end
            ;;
   }
