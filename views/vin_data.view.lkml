@@ -344,6 +344,7 @@ view: vin_data {
     value_format: "\"€\"0.0"
 
   }
+
   #####08
   measure: Avg_Catal_price {
    group_label: "CQA" label: "AVG"
@@ -360,8 +361,7 @@ view: vin_data {
 
 # }
 
-
-  #####10
+ #####10
   dimension: Logo_Brand_CQAS  {
     group_label: "CQAS" label: "LogoBrand"
     sql: ${brand} ;;
@@ -375,5 +375,7 @@ view: vin_data {
      <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
     {% endcase %};;
   }
+
+
 
 }
