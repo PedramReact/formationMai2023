@@ -401,8 +401,8 @@ view: vin_data {
     type: date_year
     sql:
           case
-            when  {% parameter Order_date_gran_zobir  %} = "year" THEN date_trunc(year, ${order_date}::date )
-            when  {% parameter Order_date_gran_zobir  %} = "month" THEN date_trunc(month, ${order_date}::date )
+            when  {% parameter Order_date_gran_zobir  %} = "year" THEN date_trunc(year, ${order_date_zobir_year}::date )
+            when  {% parameter Order_date_gran_zobir  %} = "month" THEN date_trunc(month, ${order_date_zobir_month}::date )
 
 
             order_date_zobir
