@@ -97,25 +97,147 @@ view: vin_data {
     sql: ${model};;
   }
 
-  measure: count_distinct_Asma {
+  measure: count_distinct_asma {
+    group_label: "asma"
     type:  count_distinct
     sql: ${model} ;;
     drill_fields: [model]
   }
 
-  dimension: Modified_Dealer_name_asma {
+  dimension: modified_dealer_name_asma {
+    group_label: "asma"
     type: string
     sql:  replace(${dealer_name}, " ", "_");;
   }
 
 
-  dimension:  Modified_fuel_type_asma {
+  dimension:  modified_fuel_type_asma {
+    group_label: "asma"
     type: string
     sql: CASE
-          WHEN ${fuel_type} = 'DIESEL' THEN 'Electrique'
-          WHEN ${fuel_type} = 'ELECTRIC' THEN 'Essence'
+          WHEN ${fuel_type} = 'DIESEL' THEN 'Gasoil'
+          WHEN ${fuel_type} = 'ELECTRIC' THEN 'Electrique'
+          WHEN ${fuel_type} = 'PETROL' THEN 'Essence'
           WHEN ${fuel_type} IN ('PETROL CNGGAZ', 'PETROL LPG') THEN 'GAZ'
           ELSE ${fuel_type}
-        END ;;
+         END ;;
   }
+
+
+dimension:  concat_model_version_asma {
+  group_label: "asma"
+  type:  string
+  sql: concat(${model},"-", ${version});;
+  drill_fields: [brand, model, version, catalogue_price]
+  }
+
+
+dimension_group: order_date_asma{
+  group_label: "asma"
+    type: time
+    timeframes: [
+      date,
+      day_of_week,
+      week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+
+dimension: invoice_date_asma {
+  group_label: "asma"
+  sql: ${invoice_date} ;;
+  html:{{ rendered_value | date: "%A %d %b %y" }};;
+
+  }
+
+measure: max_catalogue_price_asma {
+  group_label: "asma"
+    type: max
+    sql: ${catalogue_price};;
+    value_format: "0.0"
+  }
+
+measure: min_catalogue_price_asma {
+  group_label: "asma"
+    type: min
+    sql: ${catalogue_price};;
+    value_format: "0.0"
+
+  }
+
+measure: avg_catalogue_price_asma {
+  group_label: "asma"
+    type: average
+    sql: ${catalogue_price};;
+    value_format: "0.0"
+  }
+
+dimension: difference_invoice_order_date_asma {
+  group_label: "asma"
+  sql: DATE_DIFF(${invoice_date}, ${order_date_asma_date}, day) ;;
+  }
+
+measure: min_difference_invoice_order_date_asma {
+  group_label: "asma"
+  type: min
+  sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+measure: max_difference_invoice_order_date_asma{
+  group_label: "asma"
+  type: max
+  sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+measure: avg_difference_invoice_order_date_asma {
+  group_label: "asma"
+  type: average
+  sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  dimension: Brand_Logo {
+    group_label: "asma"
+    type: string
+    sql: CASE
+         WHEN ${brand} = 'ALPINE' THEN 'https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg'
+         WHEN ${brand} = 'DACIA' THEN 'https://upload.wikimedia.org/wikipedia/fr/4/4d/Logo_Dacia.svg'
+         WHEN ${brand} = 'RENAULT' THEN 'https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg'
+         END;;
+    html: <img src={{value}} width="255">;;
+  }
+
+
+  dimension:  Brand_l {
+    sql: ${brand} ;;
+    html:  {% if brand.value == "Alpine" %}
+      <img src= "https://logo-marque.com/wp-content/uploads/2021/08/Alpine-Logo-650x366.png">
+    {% elsif brand.value == "Renault" %}
+      <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-650x366.png">
+    {% elsif brand.value =="Dacia" %}
+      <img src= "https://logo-marque.com/wp-content/uploads/2021/06/Dacia-Logo-650x366.jpg">
+
+    {% endif %}
+ ;;
+  }
+
+
+
+
+  dimension:  Brand_l_2 {
+    sql:${TABLE}.brand  ;;
+    html:  {% if value == "Alpine" %}
+      <img src= "https://logo-marque.com/wp-content/uploads/2021/08/Alpine-Logo-650x366.png">
+    {% elsif value == "Renault" %}
+      <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-650x366.png">
+    {% elsif value =="Dacia" %}
+      <img src= "https://logo-marque.com/wp-content/uploads/2021/06/Dacia-Logo-650x366.jpg">
+
+    {% endif %} ;;
+  }
+
 }
