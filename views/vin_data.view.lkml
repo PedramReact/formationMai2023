@@ -436,6 +436,27 @@ view: vin_data {
 
 # }
 
+####
+
+  #####9 amal
+  #exo 9
+  dimension: difference_date {
+    type: number
+    sql: date_diff ( ${invoice_date}. ${order_date_zobir_date}, day) ;;
+  }
+  measure: min_difference_date {
+    type: min
+    sql: ${difference_date} ;;
+  }
+  measure: max_difference_date {
+    type: max
+    sql: ${difference_date} ;;
+  }
+  measure: avg_difference_date {
+    type: average
+    sql: ${difference_date} ;;
+  }
+
  #####10
   dimension: Logo_Brand_CQAS  {
     group_label: "CQAS" label: "LogoBrand"
@@ -450,6 +471,21 @@ view: vin_data {
      <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
     {% endcase %};;
   }
+
+  #####10 AMAL test
+    dimension: Logo_Brand_AMAL  {
+      group_label: "AMAL" label: "LogoBrand"
+      sql: ${brand} ;;
+      html:
+        {% case value %}
+    {% when "ALPINE"  %}
+     <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
+    {% when "DACIA"  %}
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41"">
+    {% else %}
+     <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
+    {% endcase %};;
+    }
 
 
 
