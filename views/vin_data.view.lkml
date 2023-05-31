@@ -376,8 +376,8 @@ view: vin_data {
   parameter: Order_date_gran_zobir {
     group_label: "zobir"
     type: string
-    allowed_value: {value: "year"}
-    allowed_value: {value: "month"}
+    allowed_value: {value:"year"}
+    allowed_value: {value:"month"}
   }
 
   dimension: order_dt_gran_zobir {
