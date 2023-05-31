@@ -381,6 +381,7 @@ view: vin_data {
   }
 
   dimension: order_dt_gran_zobir {
+    group_label: "zobir"
     label_from_parameter: Order_date_gran_zobir
     type: date_year
     sql:
