@@ -15,7 +15,7 @@ persist_with: formationmai2023_default_datagroup
 #explore: pareto {}
 
 
-explore: vin_data {
+explore: vin_data{
   hidden:  no
 }
 
