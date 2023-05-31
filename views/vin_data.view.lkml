@@ -361,6 +361,8 @@ view: vin_data {
     sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
   }
 
+
+
   dimension: Fuel_type_CQAS{
     group_label: "CQAS" label: "Fuel_type"
     type: string
