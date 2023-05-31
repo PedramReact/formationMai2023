@@ -114,6 +114,7 @@ view: vin_data {
       year
     ]
     convert_tz: no
+    datatype: date
     sql:${order_date} ;;
   }
 
