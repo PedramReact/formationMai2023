@@ -373,7 +373,7 @@ view: vin_data {
     sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
   }
 
-  parameter: Order_date_gran_zobir {
+  parameter: Granularite_dt_zobir {
     group_label: "zobir"
     type: string
     allowed_value: {value:"year"}
@@ -382,7 +382,7 @@ view: vin_data {
 
   dimension: order_dt_gran_zobir {
     group_label: "zobir"
-    label_from_parameter: Order_date_gran_zobir
+    label_from_parameter: Granularite_dt_zobir
     type: date_year
     sql:
           case
