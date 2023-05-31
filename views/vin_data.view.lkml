@@ -235,4 +235,90 @@ view: vin_data {
     sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
   }
 
+  dimension: Fuel_type_CQAS{
+    group_label: "CQAS" label: "Fuel_type"
+    type: string
+    sql: (case
+      when ${TABLE}.fuel_type = "DIESEL" then "Gasoil"
+      when ${TABLE}.fuel_type = "ELECTRIC" then "Electrique"
+      when ${TABLE}.fuel_type = "PETROL" then "Essence"
+      when ${TABLE}.fuel_type = "PETROL CNGGAZ" then "GAZ"
+      when ${TABLE}.fuel_type = "PETROL LPG" then "GAZ"
+      else "null"
+      end
+      )
+    ;;
+  }
+
+ #####05
+ dimension: Model_versionCQAS {
+  group_label: "CQAS" label: "CONCAT_Medel_Version"
+   type: string
+   drill_fields: [brand, model, version]
+   sql: concat(${model},"-", ${version});;
+ }
+#####06
+  dimension: Order_DateC {
+    group_label: "CQAS" label: "Order_Date"
+    type: date
+    sql: CAST(${order} as date) ;;
+
+  }
+
+#####07
+ dimension: Format_date {
+  group_label: "CQAS" label: "new format date"
+   #type: date
+   sql: ${invoice_date};;
+  html: {{rendered_value | date: "%A,  %e, %b,, %y"}} ;;
+
+ }
+#####08
+ measure: Min_Catal_price {
+  group_label: "CQA" label: "MIN"
+  type: min
+  sql: ${catalogue_price} ;;
+  value_format: "\"€\"0.0"
+
+}
+#####08
+  measure: Max_Catal_price {
+    group_label: "CQA" label: "MAX"
+    type: max
+    sql: ${catalogue_price} ;;
+    value_format: "\"€\"0.0"
+
+  }
+  #####08
+  measure: Avg_Catal_price {
+   group_label: "CQA" label: "AVG"
+    type: average
+    sql: ${catalogue_price} ;;
+    value_format: "\"€\"0.0"
+
+  }
+  #####09
+ #measure: Diff_Date {
+  #group_label: "CQA" label: "DifDate"
+  #type: date
+  #sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_date_CQAS}) ;;
+
+# }
+
+
+  #####10
+  dimension: Logo_Brand_CQAS  {
+    group_label: "CQAS" label: "LogoBrand"
+    sql: ${brand} ;;
+    html:
+        {% case value %}
+    {% when "ALPINE"  %}
+     <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
+    {% when "DACIA"  %}
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41"">
+    {% else %}
+     <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
+    {% endcase %};;
+  }
+
 }
