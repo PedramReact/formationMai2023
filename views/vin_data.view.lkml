@@ -373,6 +373,24 @@ view: vin_data {
     sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
   }
 
+  parameter: Order_date_gran_zobir {
+    group_label: "zobir"
+    type: string
+    allowed_value: {value: "year"}
+    allowed_value: {value: "month"}
+  }
+
+  dimension: order_dt_gran_zobir {
+    label_from_parameter: Order_date_gran_zobir
+    type: date_year
+    sql: (
+          case
+            when  {% parameter Order_date_gran_zobir  %} = "year" THEN date_trunc(year, ${order_date_v2_zobir}::date )
+            when  {% parameter Order_date_gran_zobir  %} = "month" THEN date_trunc(month, ${order_date_v2_zobir}::date )
+
+         else null end
+          ) ;;
+  }
 
 
   dimension: Fuel_type_CQAS{
