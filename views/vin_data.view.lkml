@@ -383,13 +383,13 @@ view: vin_data {
   dimension: order_dt_gran_zobir {
     label_from_parameter: Order_date_gran_zobir
     type: date_year
-    sql: (
+    sql:
           case
             when  {% parameter Order_date_gran_zobir  %} = "year" THEN date_trunc(year, ${order_date_v2_zobir}::date )
             when  {% parameter Order_date_gran_zobir  %} = "month" THEN date_trunc(month, ${order_date_v2_zobir}::date )
 
          else null end
-          ) ;;
+           ;;
   }
 
 
