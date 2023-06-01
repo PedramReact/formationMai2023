@@ -74,6 +74,7 @@ view: vin_data {
     convert_tz: no
     datatype: date
     sql: ${TABLE}.order_date;;
+
   }
 
   dimension: order_id {
@@ -91,7 +92,19 @@ view: vin_data {
     sql: replace(${dealer_name}," ","_") ;;
   }
 
-    dimension: type_de_carburant {
+dimension: type_de_carburant {
+  type: string
+  sql:
+    case
+    when ${fuel_type} = "DIESEL" then "Gasoil"
+    when ${fuel_type} = "ELECTRIC" then "Electrique"
+    when ${fuel_type} = "PETROL" then "Essence"
+    when ${fuel_type} = "PETROL CNGGAZ" then "GAZ"
+    when ${fuel_type} = "PETROL LPG" then "GAZ"
+    end;;
+}
+
+    dimension: type_de_logo {
     sql: ${brand} ;;
       html:
       {% if value == "RENAULT" %}
@@ -125,6 +138,38 @@ dimension: logo {
   end;;
   html: "<img src={{value}}/>";;
   }
+
+
+  parameter: date_granularity {
+    type: unquoted
+    allowed_value: {
+      label: "Day"
+      value: "day"
+    }
+    allowed_value: {
+      label: "Week"
+      value: "week"
+    }
+    allowed_value: {
+      label: "Month"
+      value: "month"
+    }
+  }
+
+  dimension: date {
+    sql:
+    {% if date_granularity._parameter_value == 'day' %}
+      ${order_day_of_week}
+    {% elsif date_granularity._parameter_value == 'month' %}
+      ${order_month}
+    {% elsif date_granularity._parameter_value == 'week' %}
+      ${order_week}
+    {% else %}
+      ${order_year}
+    {% endif %};;
+  }
+
+
 
   measure: count {
     type: count
