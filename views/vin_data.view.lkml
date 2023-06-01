@@ -21,6 +21,21 @@ view: vin_data {
     {% endif %} ;;
   }
 
+  dimension: logo_DEB {
+    group_label: "DEB"
+    type: string
+    sql: ${brand} ;;
+    html: {% if brand._value == "RENAULT" %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg" height="80" width="80">
+              {% elsif brand._value == "ALPINE" %}
+              <img src="https://upload.wikimedia.org/wikipedia/fr/b/b7/Alpine_F1_Team_2021_Logo.svg" height="80" width="80">
+              {% elsif brand._value == "DACIA" %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Dacia-logo.png" height="80" width="80">
+              {% else %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
+              {% endif %} ;;
+  }
+
   dimension: catalogue_price {
     type: number
     sql: ${TABLE}.catalogue_price ;;
@@ -634,5 +649,133 @@ view: vin_data {
     <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/1/1f/Alpine.svg/langfr-420px-Alpine.svg.png" height="170" width="255">
     {% endif %} ;;
   }
+  dimension_group: order_date_DEB {
+    type: time
+    timeframes: [date, day_of_week, month, week, year]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+  measure: max_catalogue_price_DEB {
+    group_label: "DEB"
+    type: max
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+  dimension: fuel_type_DEB {
+    group_label: "DEB"
+    type: string
+    sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
+  }
+
+  dimension: dealer_name_modified_amal {
+    label: "dealer_name_modified_amal"
+    group_label: "amal"
+    type: string
+    sql: replace(${dealer_name}, " ", "_") ;;
+  }
+
+  dimension: Brand_Logo {
+    group_label: "asma"
+    type: string
+    sql: CASE
+         WHEN ${brand} = 'ALPINE' THEN 'https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg'
+         WHEN ${brand} = 'DACIA' THEN 'https://upload.wikimedia.org/wikipedia/fr/4/4d/Logo_Dacia.svg'
+         WHEN ${brand} = 'RENAULT' THEN 'https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg'
+         END;;
+    html: <img src={{value}} width="255">;;
+  }
+  dimension_group: order_date_asma{
+    group_label: "asma"
+    type: time
+    timeframes: [
+      date,
+      day_of_week,
+      week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+  dimension: difference_invoice_order_date_asma {
+    group_label: "asma"
+    sql: DATE_DIFF(${invoice_date}, ${order_date_asma_date}, day) ;;
+  }
+
+  measure: min_difference_invoice_order_date_asma {
+    group_label: "asma"
+    type: min
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: max_difference_invoice_order_date_asma{
+    group_label: "asma"
+    type: max
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: avg_difference_invoice_order_date_asma {
+    group_label: "asma"
+    type: average
+    sql: ${difference_invoice_order_date_asma} ;;
+
+  }
+  measure: min_difference_invoicedate_orderdate {
+    group_label: "asma"
+    type: min
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: max_difference_invoicedate_orderdate{
+    group_label: "asma"
+    type: max
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: avg_difference_invoicedate_orderdate {
+    group_label: "asma"
+    type: average
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  dimension:  modified_fuel_type_asma {
+    group_label: "asma"
+    type: string
+    sql: CASE
+          WHEN ${fuel_type} = 'DIESEL' THEN 'Gasoil'
+          WHEN ${fuel_type} = 'ELECTRIC' THEN 'Electrique'
+          WHEN ${fuel_type} = 'PETROL' THEN 'Essence'
+          WHEN ${fuel_type} IN ('PETROL CNGGAZ', 'PETROL LPG') THEN 'GAZ'
+          ELSE ${fuel_type}
+         END ;;
+  }
+
+  measure: max_price {
+    type:  max
+    sql: ${catalogue_price} ;;
+    value_format: "0.0"
+  }
+
+
+  dimension: type_de_carburant {
+    sql: ${brand} ;;
+    html:
+      {% if value == "RENAULT" %}
+      <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-2021-present.jpg" height="170" width="255"/>
+      {% elsif value == "ALPINE" %}
+      <img src="https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg" height="170" width="255"/>
+      {% elsif value == "DACIA"%}
+      <img src="https://motorsactu.com/wp-content/uploads/2021/06/NOUVEAU-LOGO-DACIA.jpg" height="170" width="255"/>
+
+      {% endif %};;
+  }
+
+
+
+
+
 
 }
