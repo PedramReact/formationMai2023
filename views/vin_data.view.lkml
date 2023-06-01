@@ -511,7 +511,8 @@ view: vin_data {
 
 
     dimension: Logo_Brand_AMAL  {
-      group_label: "AMAL" label: "LogoBrand"
+      group_label: "AMAL"
+      label: "LogoBrand"
       sql: ${brand} ;;
       html:
         {% case value %}
@@ -639,10 +640,24 @@ view: vin_data {
 
   dimension: dealer_name_modified_amal {
     label: "dealer_name_modified_amal"
-    group_label: "amal"
+    group_label: "AMAL"
     type: string
     sql: replace(${dealer_name}, " ", "_") ;;
   }
+
+  dimension: fuel_type_amal {
+    group_label: "AMAL"
+    type: string
+    sql:(
+      CASE
+        WHEN ${TABLE}.fuel_type = "DIESEL" THEN "Gasoil"
+        WHEN ${TABLE}.fuel_type = "ELECTRIC" THEN "Electrique"
+        WHEN ${TABLE}.fuel_type = "PETROL" THEN "Essence"
+        WHEN ${TABLE}.fuel_type = "PETROL ONGAZ" THEN "GAZ"
+        WHEN ${TABLE}.fuel_type = "PETROL LPG" THEN "GAZ"
+        ELSE "Other"
+       END ) ;;
+    }
 
   dimension: Brand_Logo {
     group_label: "asma"
