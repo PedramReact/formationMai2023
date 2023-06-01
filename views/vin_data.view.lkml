@@ -135,6 +135,38 @@ view: vin_data {
     sql:${order_date} ;;
   }
 
+  parameter: date_granularity_junaid {
+    group_label: "date_junaid"
+    type: unquoted
+    allowed_value: {
+      label: "Année"
+      value: "year"
+    }
+    allowed_value: {
+      label: "Mois"
+      value: "month"
+    }
+    allowed_value: {
+      label: "Semaine"
+      value: "week"
+    }
+  }
+
+  dimension: order_date_granularity_junaid {
+    group_label: "date_junaid"
+    sql:
+    {% if date_granularity_junaid._parameter_value == 'year' %}
+      ${order_date_junaid_year}
+    {% elsif date_granularity_junaid._parameter_value == 'month' %}
+      ${order_date_junaid_month}
+    {% elsif date_granularity_junaid._parameter_value == 'week' %}
+      ${order_date_junaid_week}
+    {% else %}
+      ${order_date_junaid_year}
+    {% endif %};;
+  }
+
+
   dimension: dif_order_invoice_date {
     type: number
     sql:  DATETIME_DIFF(${invoice_date}, ${order_date_junaid_date}, DAY);;
