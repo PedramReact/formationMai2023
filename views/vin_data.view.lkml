@@ -714,4 +714,29 @@ view: vin_data {
          END ;;
   }
 
+  measure: max_price {
+    type:  max
+    sql: ${catalogue_price} ;;
+    value_format: "0.0"
+  }
+
+
+  dimension: type_de_carburant {
+    sql: ${brand} ;;
+    html:
+      {% if value == "RENAULT" %}
+      <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-2021-present.jpg" height="170" width="255"/>
+      {% elsif value == "ALPINE" %}
+      <img src="https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg" height="170" width="255"/>
+      {% elsif value == "DACIA"%}
+      <img src="https://motorsactu.com/wp-content/uploads/2021/06/NOUVEAU-LOGO-DACIA.jpg" height="170" width="255"/>
+
+      {% endif %};;
+  }
+
+
+
+
+
+
 }
