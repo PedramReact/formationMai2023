@@ -637,6 +637,13 @@ view: vin_data {
     sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
   }
 
+  dimension: dealer_name_modified_amal {
+    label: "dealer_name_modified_amal"
+    group_label: "amal"
+    type: string
+    sql: replace(${dealer_name}, " ", "_") ;;
+  }
+
   dimension: Brand_Logo {
     group_label: "asma"
     type: string
