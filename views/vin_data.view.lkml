@@ -205,10 +205,10 @@ measure: avg_difference_invoice_order_date_asma {
     type: string
     sql: CASE
          WHEN ${brand} = 'ALPINE' THEN 'https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg'
-         WHEN ${brand} = 'DACIA' THEN 'https://upload.wikimedia.org/wikipedia/fr/4/4d/Logo_Dacia.svg'
+         WHEN ${brand} = 'DACIA' THEN 'https://logodix.com/logo/1208196.png'
          WHEN ${brand} = 'RENAULT' THEN 'https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg'
          END;;
-    html: <img src={{value}}>;;
+    html: <img src={{ value }} width="125">;;
   }
 
 
@@ -218,8 +218,8 @@ measure: avg_difference_invoice_order_date_asma {
     {% if value == "ALPINE" %}
       <img src= "https://logo-marque.com/wp-content/uploads/2021/08/Alpine-Logo-650x366.png" height= "1700" width="255">
     {% elsif value == "RENAULT" %}
-      <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-650x366.png" height= "170" width="255">
-    {% elsif value =="DACIA" %}
+      <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-650x366.pn
+    {% elsif value =="DACIA" %}g" height= "170" width="255">
       <img src= "https://logo-marque.com/wp-content/uploads/2021/06/Dacia-Logo-650x366.jpg" height= "1700" width="255">
 
     {% endif %}
@@ -234,15 +234,22 @@ measure: avg_difference_invoice_order_date_asma {
                     {% elsif brand._value == "ALPINE" %}
       <img src="https://upload.wikimedia.org/wikipedia/fr/b/b7/Alpine_F1_Team_2021_Logo.svg" height="150" width="80">
                     {% elsif brand._value == "DACIA" %}
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Dacia-logo.png" height="150" width="80">
+      <img src="https://logodix.com/logo/1208196.png" height="150" width="80">
                     {% else %}
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
                     {% endif %} ;;
   }
 
-
-
-
+  dimension:  brand_logo_aa{
+    sql: ${brand} ;;
+    html: {% if brand._value == "RENAULT" %}
+          <img src = "https://www.largus.fr/images/styles/max_1300x1300/public/images/logo-renault-fond-noir.jpg?itok=RQr9UQLF" height="170" width="255">
+          {% elsif brand._value == "DACIA" %}
+          <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Dacia-logo.png/900px-Dacia-logo.png" height="170" width="255">
+          {% else %}
+          <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/1/1f/Alpine.svg/langfr-420px-Alpine.svg.png" height="170" width="255">
+          {% endif %} ;;
+  }
 
 
 }
