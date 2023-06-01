@@ -21,6 +21,21 @@ view: vin_data {
     {% endif %} ;;
   }
 
+  dimension: logo_DEB {
+    group_label: "DEB"
+    type: string
+    sql: ${brand} ;;
+    html: {% if brand._value == "RENAULT" %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg" height="80" width="80">
+              {% elsif brand._value == "ALPINE" %}
+              <img src="https://upload.wikimedia.org/wikipedia/fr/b/b7/Alpine_F1_Team_2021_Logo.svg" height="80" width="80">
+              {% elsif brand._value == "DACIA" %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Dacia-logo.png" height="80" width="80">
+              {% else %}
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
+              {% endif %} ;;
+  }
+
   dimension: catalogue_price {
     type: number
     sql: ${TABLE}.catalogue_price ;;
@@ -99,10 +114,7 @@ view: vin_data {
     sql: ${TABLE}.model ;;
   }
 
-  dimension: order {
-    type: string
-    sql: ${TABLE}.order_date ;;
-  }
+
 
   dimension: order_date {
     type: string
@@ -216,6 +228,21 @@ view: vin_data {
     sql: ${model};;
   }
 
+  measure: count_distinct_pedram {
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [version,brand,dealer_name]
+  }
+
+  measure: uniq_model_matveeva {
+    group_label: "anastasiia"
+    type:  count_distinct
+    sql:  ${model} ;;
+    drill_fields: [ model, count ]
+  }
+
+
+  dimension: DealerNameModif_Matveeva {}
   dimension: dealer_name_zobir {
     group_label: "zobir"
     type: string
@@ -237,94 +264,90 @@ view: vin_data {
     ) ;;
     #sql: REPLACE(${TABLE}.fuel_type, " ", "-");;
     }
-  dimension: Concat_Model_Version_zobir {
-    group_label: "zobir"
-    type: string
-    drill_fields: [brand, model, count]
-    sql: concat(${model}, "-", ${version})  ;;
-  }
+    dimension: Concat_Model_Version_zobir {
+      group_label: "zobir"
+      type: string
+      drill_fields: [brand, model, count]
+      sql: concat(${model}, "-", ${version})  ;;
+    }
 
-  dimension_group: order_date_zobir {
-    #group_label: "zobir"
-    type: time
-    timeframes: [
-      date,
-      day_of_week,
-      week,
-      month,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.order_date ;;
-  }
+    dimension_group: order_date_zobir {
+      #group_label: "zobir"
+      type: time
+      timeframes: [
+        date,
+        day_of_week,
+        week,
+        month,
+        year
+      ]
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.order_date ;;
+    }
 
-  dimension: invoice_date_formatted_zobir {
-    group_label: "zobir"
-    sql: ${TABLE}.invoice_date ;;
-    html: {{ rendered_value | date: "%A %d %b %y" }};;
-  }
+    dimension: invoice_date_formatted_zobir {
+      group_label: "zobir"
+      sql: ${TABLE}.invoice_date ;;
+      html: {{ rendered_value | date: "%A %d %b %y" }};;
+    }
 
-  measure: catalogue_price_avg_zobir {
-    group_label: "zobir"
-    type: average
-    sql: ${TABLE}.catalogue_price ;;
-    value_format_name: usd
-  }
+    measure: catalogue_price_avg_zobir {
+      group_label: "zobir"
+      type: average
+      sql: ${TABLE}.catalogue_price ;;
+      value_format_name: usd
+    }
 
-  measure: catalogue_price_max_zobir {
-    group_label: "zobir"
-    type: max
-    sql: ${TABLE}.catalogue_price ;;
-    value_format_name: usd
-  }
-  measure: catalogue_price_min_zobir {
-    group_label: "zobir"
-    type: min
-    sql: ${TABLE}.catalogue_price ;;
-    value_format_name: usd
-  }
+    measure: catalogue_price_max_zobir {
+      group_label: "zobir"
+      type: max
+      sql: ${TABLE}.catalogue_price ;;
+      value_format_name: usd
+    }
+    measure: catalogue_price_min_zobir {
+      group_label: "zobir"
+      type: min
+      sql: ${TABLE}.catalogue_price ;;
+      value_format_name: usd
+    }
 
-  dimension: order_date_v2_zobir {
-    group_label: "zobir"
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.order_date ;;
-  }
+    dimension: order_date_v2_zobir {
+      group_label: "zobir"
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.order_date ;;
+    }
 
-  measure: diff_order_invoice_dt_zobir {
-    group_label: "zobir"
-    type: number
-    sql:  DATE_DIFF(${invoice_date}, ${order_date_v2_zobir}) ;;
-    #sql:  DATETIME_DIFF(${TABLE}.invoice_date, ${TABLE}.order_date_v2_zobir) ;;
-    drill_fields: [ diff_ord_inv_dt_MIN_zobir, diff_ord_inv_dt_AVG_zobir, diff_ord_inv_dt_MAX_zobir ]
-    #sql:  DATETIME_DIFF(${invoice_date}, ${order_date_junaid_date}, DAY);;
+    measure: diff_order_invoice_dt_zobir {
+      group_label: "zobir"
+      type: number
+      sql:  DATETIME_DIFF(${invoice_date}, ${order_date_v2_zobir}, DAY);;
+    }
+    measure: diff_ord_inv_dt_MAX_zobir {
+      group_label: "zobir"
+      type: max
+      sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
+      #value_format_name: usd
+    }
+    measure: diff_ord_inv_dt_MIN_zobir {
+      group_label: "zobir"
+      type: min
+      sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
+      #value_format_name: usd
+    }
+    measure: diff_ord_inv_dt_AVG_zobir {
+      group_label: "zobir"
+      type: average
+      sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
+      #value_format_name: usd
+    }
 
-  }
-  measure: diff_ord_inv_dt_MAX_zobir {
-    group_label: "zobir"
-    type: max
-    sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
-    #value_format_name: usd
-  }
-  measure: diff_ord_inv_dt_MIN_zobir {
-    group_label: "zobir"
-    type: min
-    sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
-    #value_format_name: usd
-  }
-  measure: diff_ord_inv_dt_AVG_zobir {
-    group_label: "zobir"
-    type: average
-    sql: ${TABLE}.diff_order_invoice_dt_zobir ;;
-    #value_format_name: usd
-  }
-
-  dimension: brand_logo_zobir {
-    group_label: "zobir"
-    type: string
-    sql: ${brand} ;;
-    html:
+    dimension: brand_logo_zobir {
+      group_label: "zobir"
+      type: string
+      sql: ${brand} ;;
+      html:
               {% if brand._value == "ALPINE" %}
               <img src="https://logo-marque.com/wp-content/uploads/2021/08/Alpine-Logo-650x366.png" height="170" width="255">
               {% elsif brand._value == "RENAULT" %}
@@ -334,153 +357,159 @@ view: vin_data {
               {% else %}
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
               {% endif %} ;;
-  }
+    }
 
-  measure: nombre_distinct_models_zobir {
-    group_label: "zobir"
-    type: number
-    sql:  (
+    measure: nombre_distinct_models_zobir {
+      group_label: "zobir"
+      type: number
+      sql:  (
         count(DISTINCT(${model}))
 ) ;;
-  }
+    }
 
-  measure: count_distinct_models_C_zobir {
-    group_label: "zobir"
-    type: number
-    #sql: COUNT_DISTINCT(IF(substring(${model}, 1, 1) = "C", ${model},NULL)) ;;
-    sql:  (
+    measure: count_distinct_models_C_zobir {
+      group_label: "zobir"
+      type: number
+      #sql: COUNT_DISTINCT(IF(substring(${model}, 1, 1) = "C", ${model},NULL)) ;;
+      sql:  (
         count(DISTINCT(case when substring(${model}, 1, 1) = "C" then ${model} end))
 ) ;;
-  }
+    }
 #count(COUNT_DISTINCT(case when substring(${model}, 1, 1) = "C" then 1 end))
 # count(COUNT_DISTINCT(case when substring(${model}, 1, 1) = "C" then 1 end))
 # COUNT_DISTINCT(IF(Category="Stationery", Transaction ID,NULL))
 # substring(${model}, 1, 1) = “C”
 # count(distinct
 
-  dimension: Concat_Brand_Carburant_zobir {
-    group_label: "zobir"
-    type: string
-    #drill_fields: [count]
-    sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
-  }
+    dimension: Concat_Brand_Carburant_zobir {
+      group_label: "zobir"
+      type: string
+      #drill_fields: [count]
+      sql: concat(${brand}, " - ", ${Type_de_Carburant_zobir})  ;;
+    }
 
-  dimension: Fuel_type_CQAS{
-    group_label: "CQAS" label: "Fuel_type"
-    type: string
-    sql: (case
-      when ${TABLE}.fuel_type = "DIESEL" then "Gasoil"
-      when ${TABLE}.fuel_type = "ELECTRIC" then "Electrique"
-      when ${TABLE}.fuel_type = "PETROL" then "Essence"
-      when ${TABLE}.fuel_type = "PETROL CNGGAZ" then "GAZ"
-      when ${TABLE}.fuel_type = "PETROL LPG" then "GAZ"
-      else "null"
-      end
-      )
-    ;;
-  }
 
- #####05
- dimension: Model_versionCQAS {
-  group_label: "CQAS" label: "CONCAT_Medel_Version"
-   type: string
-   drill_fields: [brand, model, version]
-   sql: concat(${model},"-", ${version});;
- }
+
+    dimension: Fuel_type_CQAS{
+      group_label: "CQAS" label: "Fuel_type"
+      type: string
+      sql: (case
+              when ${TABLE}.fuel_type = "DIESEL" then "Gasoil"
+              when ${TABLE}.fuel_type = "ELECTRIC" then "Electrique"
+              when ${TABLE}.fuel_type = "PETROL" then "Essence"
+              when ${TABLE}.fuel_type = "PETROL CNGGAZ" then "GAZ"
+              when ${TABLE}.fuel_type = "PETROL LPG" then "GAZ"
+              else "null"
+              end
+              )
+            ;;
+    }
+
+    #####05
+    dimension: Model_versionCQAS {
+      group_label: "CQAS" label: "CONCAT_Medel_Version"
+      type: string
+      drill_fields: [brand, model, version]
+      sql: concat(${model},"-", ${version});;
+    }
 #####06
-  dimension_group: Order_DateC {
-    group_label: "CQAS" label: "Order_Date"
-    type: time
-    timeframes: [
-      date,
-      day_of_week,
-      month,
-      week,
-      year
-    ]
-    datatype: date
+    dimension_group: Order_DateC {
+      group_label: "CQAS" label: "Order_Date"
 
-  }
+      type: time
+      sql: CAST(${order_date_v2_zobir} as date) ;;
+
+      timeframes: [
+        date,
+        day_of_week,
+        month,
+        week,
+        year
+      ]
+      datatype: date
+
+
+    }
 
 #####07
- dimension: Format_date {
-  group_label: "CQAS" label: "new format date"
-   #type: date
-   sql: ${invoice_date};;
-  html: {{rendered_value | date: "%A,  %e, %b, %y"}} ;;
+    dimension: Format_date {
+      group_label: "CQAS" label: "new format date"
+      #type: date
+      sql: ${invoice_date};;
+      html: {{rendered_value | date: "%A,  %e, %b, %y"}} ;;
 
- }
+    }
 
 #####08
- measure: Min_Catal_price {
-  group_label: "CQA" label: "MIN"
-  type: min
-  sql: ${catalogue_price} ;;
-  value_format: "\"€\"0.0"
+    measure: Min_Catal_price {
+      group_label: "CQA" label: "MIN"
+      type: min
+      sql: ${catalogue_price} ;;
+      value_format: "\"€\"0.0"
 
-}
+    }
 #####08
-  measure: Max_Catal_price {
-    group_label: "CQA" label: "MAX"
-    type: max
-    sql: ${catalogue_price} ;;
-    value_format: "\"€\"0.0"
+    measure: Max_Catal_price {
+      group_label: "CQA" label: "MAX"
+      type: max
+      sql: ${catalogue_price} ;;
+      value_format: "\"€\"0.0"
 
-  }
+    }
 
-  #####08
-  measure: Avg_Catal_price {
-   group_label: "CQA" label: "AVG"
-    type: average
-    sql: ${catalogue_price} ;;
-    value_format: "\"€\"0.0"
+    #####08
+    measure: Avg_Catal_price {
+      group_label: "CQA" label: "AVG"
+      type: average
+      sql: ${catalogue_price} ;;
+      value_format: "\"€\"0.0"
 
-  }
-  #####09
- measure: Diff_Date {
-  group_label: "CQA" label: "DifDate"
-  type: number
-  sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_DateC_date}.days) ;;
+    }
+    #####09
+    measure: Diff_Date {
+      group_label: "CQA" label: "DifDate"
+      type: number
+      sql: DATE_DIFF(${TABLE}.invoice_date, ${Order_DateC_date}.days) ;;
 
- }
+    }
 
 ####
 
-  #####9 amal
-  #exo 9
-  dimension: difference_date {
-    type: number
-    sql: date_diff ( ${invoice_date}. ${order_date_zobir_date}, day) ;;
-  }
-  measure: min_difference_date {
-    type: min
-    sql: ${difference_date} ;;
-  }
-  measure: max_difference_date {
-    type: max
-    sql: ${difference_date} ;;
-  }
-  measure: avg_difference_date {
-    type: average
-    sql: ${difference_date} ;;
-  }
+    #####9 amal
+    #exo 9
+    dimension: difference_date {
+      type: number
+      sql: date_diff ( ${invoice_date}. ${order_date_zobir_date}, day) ;;
+    }
+    measure: min_difference_date {
+      type: min
+      sql: ${difference_date} ;;
+    }
+    measure: max_difference_date {
+      type: max
+      sql: ${difference_date} ;;
+    }
+    measure: avg_difference_date {
+      type: average
+      sql: ${difference_date} ;;
+    }
 
- #####10
-  dimension: Logo_Brand_CQAS  {
-    group_label: "CQAS" label: "LogoBrand"
-    sql: ${brand} ;;
-    html:
+    #####10
+    dimension: Logo_Brand_CQAS  {
+      group_label: "CQAS" label: "LogoBrand"
+      sql: ${brand} ;;
+      html:
         {% case value %}
     {% when "ALPINE"  %}
      <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
     {% when "DACIA"  %}
-     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41"">
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41">
     {% else %}
      <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
     {% endcase %};;
-  }
+    }
 
-  #####10 AMAL test
+
     dimension: Logo_Brand_AMAL  {
       group_label: "AMAL" label: "LogoBrand"
       sql: ${brand} ;;
@@ -489,12 +518,104 @@ view: vin_data {
     {% when "ALPINE"  %}
      <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
     {% when "DACIA"  %}
-     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41"">
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41">
     {% else %}
      <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
     {% endcase %};;
     }
 
+    dimension: Type_de_carburant_matveeva {
+      type:  string
+      sql:
+          CASE
+          WHEN ${fuel_type} = "DIESEL" THEN "Gasoil"
+          WHEN ${fuel_type} = "ELECTRIC" THEN "Electrique"
+          WHEN ${fuel_type} = "PETROL" THEN "Essence"
+          WHEN ${fuel_type} = "PETROL CNGGAZ" THEN "GAZ"
+          WHEN ${fuel_type} = "PETROL LPG" THEN "GAZ"
+          END;;
+    }
 
+    dimension: concat_model_version_matveeva {
+      group_label: "anastasiia"
+      type:  string
+      sql: CONCAT(model, "-", version) ;;
+      drill_fields: [brand, model, version, catalogue_price]
+    }
 
-}
+    dimension_group: order_pedram {
+      type: time
+      timeframes: [
+        raw,
+        date,
+        week,
+        month,
+        quarter,
+        year
+      ]
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.order_date ;;
+    }
+
+    dimension: new_invoice {
+      group_label: "anastasiia"
+      sql: ${invoice_date} ;;
+      html: {{rendered_value | date:"%A %d %b %y"}} ;;
+    }
+
+    measure: min_price_matveeva {
+      group_label: "anastasiia"
+      type:  min
+      value_format: "$#.0"
+      sql:  ${catalogue_price} ;;
+    }
+
+    measure: max_price_matveeva {
+      group_label: "anastasiia"
+      type:  max
+      value_format: "$#.0"
+      sql:  ${catalogue_price} ;;
+    }
+
+    measure: avg_price_matveeva {
+      group_label: "anastasiia"
+      type:  average
+      value_format: "$#.0"
+      sql:  ${catalogue_price} ;;
+    }
+
+    dimension: dif_date_matveeva {
+      sql: DATE_DIFF(${invoice_date}, ${order_date}, day) ;;
+    }
+
+    measure: min_dif_matveeva {
+      group_label: "anastasiia"
+      type:  min
+      sql:  ${dif_date_matveeva} ;;
+    }
+
+    measure: max_dif_matveeva {
+      group_label: "anastasiia"
+      type:  max
+      sql:  ${dif_date_matveeva} ;;
+    }
+
+    measure: avg_dif_matveeva {
+      group_label: "anastasiia"
+      type:  average
+      sql:  ${dif_date_matveeva} ;;
+    }
+
+    dimension:  brand_logo_matveeva{
+      sql: ${brand} ;;
+      html: {% if brand._value == "RENAULT" %}
+            <img src = "https://www.largus.fr/images/styles/max_1300x1300/public/images/logo-renault-fond-noir.jpg?itok=RQr9UQLF" height="170" width="255">
+            {% elsif brand._value == "DACIA" %}
+            <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Dacia-logo.png/900px-Dacia-logo.png" height="170" width="255">
+            {% else %}
+            <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/1/1f/Alpine.svg/langfr-420px-Alpine.svg.png" height="170" width="255">
+            {% endif %} ;;
+    }
+
+  }
