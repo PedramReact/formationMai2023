@@ -570,6 +570,8 @@ dimension: logo {
   }
 
   dimension: date_zobir {
+    convert_tz: no
+    datatype: date
     group_label: "zobir"
     sql:
         {% if date_granularity_zobir._parameter_value == 'week' %}
