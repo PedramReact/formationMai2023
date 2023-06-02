@@ -886,6 +886,8 @@ dimension: logo {
   }
 
   measure: min_catalogue_price_AMAL{
+    label: "min catalogue price"
+
     group_label: "AMAL"
     type: min
     value_format:"0.0€"
@@ -894,6 +896,7 @@ dimension: logo {
   }
 
   measure: max_catalogue_price_AMAL {
+    label: "max catalogue price"
     group_label: "AMAL"
     type: max
     value_format: "0.0€"
@@ -901,10 +904,37 @@ dimension: logo {
   }
 
   measure: average_catalogue_price_AMAL {
+    label: "average catalogue price"
+
     group_label: "AMAL"
     type: average
     value_format: "0.0€"
     sql: ${catalogue_price} ;;
+  }
+
+  dimension: diff_order_invoice_date_AMAL {
+    group_label: "AMAL"
+    type: number
+    sql:  DATETIME_DIFF(${invoice_date}, ${order_date_junaid_date}, DAY);;
+  }
+
+  measure: avg_dif_order_invoice_AMAL{
+    group_label: "AMAL"
+    type: average
+    sql: ${diff_order_invoice_date_AMAL};;
+    value_format: "0"
+  }
+
+  measure: max_dif_order_invoice_AMAL {
+    group_label: "AMAL"
+    type: max
+    sql: ${diff_order_invoice_date_AMAL} ;;
+  }
+
+  measure: min_dif_order_invoice_AMAL {
+    group_label: "AMAL"
+    type: min
+    sql: ${diff_order_invoice_date_AMAL} ;;
   }
 
   #___________________ end amal
