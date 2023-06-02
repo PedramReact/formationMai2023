@@ -96,6 +96,7 @@ view: vin_data {
     sql: ${TABLE}.invoice_date ;;
   }
 
+
   dimension: invoice_date_formate_junaid {
     label: "Invoice date formaté"
     group_label: "date_junaid"
@@ -114,11 +115,18 @@ view: vin_data {
     sql: ${TABLE}.model ;;
   }
 
-
-
-  dimension: order_date {
-    type: string
-    sql: ${TABLE}.order_date ;;
+  dimension_group: order {
+    type: time
+    timeframes: [
+      date,
+      week,
+      day_of_week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date;;
   }
 
   dimension_group: order_date_junaid {
@@ -135,6 +143,38 @@ view: vin_data {
     sql:${order_date} ;;
   }
 
+  parameter: date_granularity_junaid {
+    group_label: "date_junaid"
+    type: unquoted
+    allowed_value: {
+      label: "Année"
+      value: "year"
+    }
+    allowed_value: {
+      label: "Mois"
+      value: "month"
+    }
+    allowed_value: {
+      label: "Semaine"
+      value: "week"
+    }
+  }
+
+  dimension: order_date_granularity_junaid {
+    group_label: "date_junaid"
+    sql:
+    {% if date_granularity_junaid._parameter_value == 'year' %}
+      ${order_date_junaid_year}
+    {% elsif date_granularity_junaid._parameter_value == 'month' %}
+      ${order_date_junaid_month}
+    {% elsif date_granularity_junaid._parameter_value == 'week' %}
+      ${order_date_junaid_week}
+    {% else %}
+      ${order_date_junaid_year}
+    {% endif %};;
+  }
+
+
   dimension: dif_order_invoice_date {
     type: number
     sql:  DATETIME_DIFF(${invoice_date}, ${order_date_junaid_date}, DAY);;
@@ -150,6 +190,89 @@ view: vin_data {
     sql: ${TABLE}.version ;;
   }
 
+  dimension: New_dealer_name {
+    type: string
+    sql: replace(${dealer_name}," ","_") ;;
+  }
+
+dimension: type_de_carburant {
+  type: string
+  sql:
+    case
+    when ${fuel_type} = "DIESEL" then "Gasoil"
+    when ${fuel_type} = "ELECTRIC" then "Electrique"
+    when ${fuel_type} = "PETROL" then "Essence"
+    when ${fuel_type} = "PETROL CNGGAZ" then "GAZ"
+    when ${fuel_type} = "PETROL LPG" then "GAZ"
+    end;;
+}
+
+    dimension: type_de_logo {
+    sql: ${brand} ;;
+      html:
+      {% if value == "RENAULT" %}
+      <img src="https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-2021-present.jpg" height="170" width="255"/>
+      {% elsif value == "ALPINE" %}
+      <img src="https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg" height="170" width="255"/>
+      {% elsif value == "DACIA"%}
+      <img src="https://motorsactu.com/wp-content/uploads/2021/06/NOUVEAU-LOGO-DACIA.jpg" height="170" width="255"/>
+
+        {% endif %};;
+    }
+
+  dimension: Concat_Model_Version {
+    type: string
+    sql: ${model}||"-"||${version}
+    ;;
+    drill_fields: [brand,model,version,catalogue_price]
+  }
+
+ dimension: diff_order_invoice {
+  sql: DATE_DIFF(${invoice_date},${order_date},day) ;;
+ }
+
+dimension: logo {
+  type: string
+  sql:
+    case
+    when ${brand}= "ALPINE" then "https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg"
+    when ${brand}= "DACIA" then "https://motorsactu.com/wp-content/uploads/2021/06/NOUVEAU-LOGO-DACIA.jpg"
+    when ${brand}= "RENAULT" then "https://logo-marque.com/wp-content/uploads/2021/04/Renault-Logo-2021-present.jpg"
+  end;;
+  html: "<img src={{value}}/>";;
+  }
+
+
+  parameter: date_granularity {
+    type: unquoted
+    allowed_value: {
+      label: "Day"
+      value: "day"
+    }
+    allowed_value: {
+      label: "Week"
+      value: "week"
+    }
+    allowed_value: {
+      label: "Month"
+      value: "month"
+    }
+  }
+
+  dimension: date {
+    sql:
+    {% if date_granularity._parameter_value == 'day' %}
+      ${order_day_of_week}
+    {% elsif date_granularity._parameter_value == 'month' %}
+      ${order_month}
+    {% elsif date_granularity._parameter_value == 'week' %}
+      ${order_week}
+    {% else %}
+      ${order_year}
+    {% endif %};;
+  }
+
+
   dimension: concat_model_version_junaid {
     label: "Modèle avec version"
     group_label: "junaid"
@@ -158,21 +281,38 @@ view: vin_data {
     drill_fields: [brand, model, version, catalogue_price]
   }
 
+
   measure: count {
     type: count
     drill_fields: [dealer_name]
   }
+
   measure: discount {
     type: count_distinct
     sql: ${version};;
   }
 
-  measure: nombre_distinct_modeles_junaid {
-    group_label: "junaid"
+
+  measure: count_models_Maximilien {
     type: count_distinct
     sql: ${model};;
     drill_fields: [model]
   }
+
+  measure: nombre_distinct_modeles_junaid {
+    group_label: "junaid"
+
+    type: count_distinct
+    sql: ${model};;
+    drill_fields: [model]
+  }
+
+
+  measure: min_price {
+    type:  min
+    sql: ${catalogue_price} ;;
+    value_format: "0.0"
+}
 
   measure: avg_catalogue_price_junaid{
     group_label: "junaid"
@@ -565,7 +705,8 @@ view: vin_data {
 
 
     dimension: Logo_Brand_AMAL  {
-      group_label: "AMAL" label: "LogoBrand"
+      group_label: "AMAL"
+      label: "LogoBrand"
       sql: ${brand} ;;
       html:
         {% case value %}
@@ -577,6 +718,14 @@ view: vin_data {
      <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
     {% endcase %};;
     }
+
+  dimension: concat_model_version_AMAL {
+    label: "Concat Model Version"
+    group_label: "AMAL"
+    type: string
+    sql: CONCAT(${model}, "-",${version});;
+    drill_fields: [brand, model, version, catalogue_price]
+  }
 
   dimension: Type_de_carburant_matveeva {
     type:  string
@@ -670,6 +819,153 @@ view: vin_data {
     {% else %}
     <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/1/1f/Alpine.svg/langfr-420px-Alpine.svg.png" height="170" width="255">
     {% endif %} ;;
+  }
+  dimension_group: order_date_DEB {
+    type: time
+    timeframes: [date, day_of_week, month, week, year]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+  measure: max_catalogue_price_DEB {
+    group_label: "DEB"
+    type: max
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+  dimension: fuel_type_DEB {
+    group_label: "DEB"
+    type: string
+    sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
+  }
+
+  dimension: dealer_name_modified_amal {
+    label: "dealer_name_modified_amal"
+    group_label: "AMAL"
+    type: string
+    sql: replace(${dealer_name}, " ", "_") ;;
+  }
+
+  dimension: fuel_type_amal {
+    label: "type de carburant"
+    group_label: "AMAL"
+    type: string
+    sql:(
+      CASE
+        WHEN ${TABLE}.fuel_type = "DIESEL" THEN "Gasoil"
+        WHEN ${TABLE}.fuel_type = "ELECTRIC" THEN "Electrique"
+        WHEN ${TABLE}.fuel_type = "PETROL" THEN "Essence"
+        WHEN ${TABLE}.fuel_type = "PETROL ONGAZ" THEN "GAZ"
+        WHEN ${TABLE}.fuel_type = "PETROL LPG" THEN "GAZ"
+        ELSE "Other"
+       END ) ;;
+    }
+
+  dimension: Brand_Logo {
+    group_label: "asma"
+    type: string
+    sql: CASE
+         WHEN ${brand} = 'ALPINE' THEN 'https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg'
+         WHEN ${brand} = 'DACIA' THEN 'https://upload.wikimedia.org/wikipedia/fr/4/4d/Logo_Dacia.svg'
+         WHEN ${brand} = 'RENAULT' THEN 'https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg'
+         END;;
+    html: <img src={{value}} width="255">;;
+  }
+  dimension_group: order_date_asma{
+    group_label: "asma"
+    type: time
+    timeframes: [
+      date,
+      day_of_week,
+      week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+  dimension: difference_invoice_order_date_asma {
+    group_label: "asma"
+    sql: DATE_DIFF(${invoice_date}, ${order_date_asma_date}, day) ;;
+  }
+
+  measure: min_difference_invoice_order_date_asma {
+    group_label: "asma"
+    type: min
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: max_difference_invoice_order_date_asma{
+    group_label: "asma"
+    type: max
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: avg_difference_invoice_order_date_asma {
+    group_label: "asma"
+    type: average
+    sql: ${difference_invoice_order_date_asma} ;;
+
+  }
+  measure: min_difference_invoicedate_orderdate {
+    group_label: "asma"
+    type: min
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: max_difference_invoicedate_orderdate{
+    group_label: "asma"
+    type: max
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  measure: avg_difference_invoicedate_orderdate {
+    group_label: "asma"
+    type: average
+    sql: ${difference_invoice_order_date_asma} ;;
+  }
+
+  dimension:  modified_fuel_type_asma {
+    group_label: "asma"
+    type: string
+    sql: CASE
+          WHEN ${fuel_type} = 'DIESEL' THEN 'Gasoil'
+          WHEN ${fuel_type} = 'ELECTRIC' THEN 'Electrique'
+          WHEN ${fuel_type} = 'PETROL' THEN 'Essence'
+          WHEN ${fuel_type} IN ('PETROL CNGGAZ', 'PETROL LPG') THEN 'GAZ'
+          ELSE ${fuel_type}
+         END ;;
+  }
+
+  measure: max_price {
+    type:  max
+    sql: ${catalogue_price} ;;
+    value_format: "0.0"
+  }
+
+  measure: average_price {
+    type:  average
+    sql: ${catalogue_price} ;;
+    value_format: "0.0"
+  }
+
+  measure: min_diff_order_invoice {
+    type:  min
+    sql: ${diff_order_invoice} ;;
+  }
+
+  measure: max_diff_order_invoice {
+    type:  max
+    sql: ${diff_order_invoice} ;;
+
+  }
+
+  measure: average_diff_order_invoice {
+    type:  average
+    sql: ${diff_order_invoice} ;;
+    value_format: "0.0"
   }
 
 }
