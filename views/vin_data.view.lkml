@@ -390,22 +390,58 @@ view: vin_data {
 
   parameter: Order_date_gran_zobir {
     group_label: "zobir"
+    hidden: yes
     type: string
     allowed_value: {value:"year"}
     allowed_value: {value:"month"}
   }
 
-  dimension: order_dt_gran_zobir {
+  dimension: order_dt_G_zobir {
+    hidden: yes
     group_label: "zobir"
     label_from_parameter: Order_date_gran_zobir
-    type: date_year
     sql:
           case
-            when  {% parameter Order_date_gran_zobir  %} = "year" THEN date_trunc(year, ${order_date_zobir_year}::date )
-            when  {% parameter Order_date_gran_zobir  %} = "month" THEN date_trunc(month, ${order_date_zobir_month}::date )
-         else null end
+            when  {% parameter Order_date_gran_zobir  %} == "year" THEN  ${order_date_zobir_year}
+            when  {% parameter Order_date_gran_zobir  %} == "month" THEN ${order_date_zobir_month}
+          end
            ;;
   }
+
+# zobir
+  parameter: date_granularity_zobir {
+    type: unquoted
+    allowed_value: {
+      label: "semaine"
+      value: "week"
+    }
+    allowed_value: {
+      label: "Month"
+      value: "month"
+    }
+    allowed_value: {
+      label: "Year"
+      value: "year"
+    }
+    allowed_value: {
+      label: "Jours"
+      value: "Day"
+    }
+  }
+
+  dimension: date_zobir {
+    group_label: "zobir"
+    sql:
+        {% if date_granularity_zobir._parameter_value == 'week' %}
+      ${order_date_zobir_week}
+        {% elsif date_granularity_zobir._parameter_value == 'month' %}
+         ${order_date_zobir_month}
+        {% elsif date_granularity_zobir._parameter_value == 'year' %}
+      ${order_date_zobir_year}
+        {% endif %};;
+  }
+# zobir
+
 
 
   dimension: Fuel_type_CQAS{
