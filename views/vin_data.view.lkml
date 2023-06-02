@@ -671,24 +671,6 @@ dimension: logo {
 
 ####
 
-  #####9 amal
-  #exo 9
-  dimension: difference_date {
-    type: number
-    sql: date_diff ( ${invoice_date}. ${order_date_zobir_date}, day) ;;
-  }
-  measure: min_difference_date {
-    type: min
-    sql: ${difference_date} ;;
-  }
-  measure: max_difference_date {
-    type: max
-    sql: ${difference_date} ;;
-  }
-  measure: avg_difference_date {
-    type: average
-    sql: ${difference_date} ;;
-  }
 
  #####10
   dimension: Logo_Brand_CQAS  {
@@ -706,28 +688,9 @@ dimension: logo {
   }
 
 
-    dimension: Logo_Brand_AMAL  {
-      group_label: "AMAL"
-      label: "LogoBrand"
-      sql: ${brand} ;;
-      html:
-        {% case value %}
-    {% when "ALPINE"  %}
-     <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
-    {% when "DACIA"  %}
-     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41">
-    {% else %}
-     <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
-    {% endcase %};;
-    }
 
-  dimension: concat_model_version_AMAL {
-    label: "Concat Model Version"
-    group_label: "AMAL"
-    type: string
-    sql: CONCAT(${model}, "-",${version});;
-    drill_fields: [brand, model, version, catalogue_price]
-  }
+
+
 
   dimension: Type_de_carburant_matveeva {
     type:  string
@@ -842,15 +805,17 @@ dimension: logo {
     sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
   }
 
+  #___________________ start amal
+
   dimension: dealer_name_modified_amal {
-    label: "dealer_name_modified_amal"
+    label: "dealer name modified amal"
     group_label: "AMAL"
     type: string
     sql: replace(${dealer_name}, " ", "_") ;;
   }
 
   dimension: fuel_type_amal {
-    label: "type de carburant"
+    label: "fuel type"
     group_label: "AMAL"
     type: string
     sql:(
@@ -864,6 +829,105 @@ dimension: logo {
        END ) ;;
     }
 
+  dimension: concat_model_version_AMAL {
+    label: "Concat Model Version"
+    group_label: "AMAL"
+    type: string
+    sql: CONCAT(${model}, "-",${version});;
+    drill_fields: [brand, model, version, catalogue_price]
+  }
+
+  dimension_group: order_date_AMAL {
+    type: time
+    timeframes: [
+      date,
+      day_of_week,
+      week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+  dimension: invoice_date_formatted_AMAL {
+    label: "invoice date formatted"
+    group_label: "AMAL"
+    sql: ${TABLE}.invoice_date ;;
+    html: {{ rendered_value | date: "%A %d %b %y" }};;
+  }
+
+  measure: min_catalogue_price_AMAL{
+    label: "min catalogue price"
+
+    group_label: "AMAL"
+    type: min
+    value_format:"0.0€"
+    sql: ${catalogue_price};;
+
+  }
+
+  measure: max_catalogue_price_AMAL {
+    label: "max catalogue price"
+    group_label: "AMAL"
+    type: max
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+
+  measure: average_catalogue_price_AMAL {
+    label: "average catalogue price"
+
+    group_label: "AMAL"
+    type: average
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+
+  dimension: diff_order_invoice_date_AMAL {
+    group_label: "AMAL"
+    type: number
+    sql:  DATETIME_DIFF(${invoice_date}, ${order_date_AMAL_date}, DAY);;
+  }
+
+  measure: average_dif_order_invoice_AMAL{
+    group_label: "AMAL"
+    type: average
+    sql: ${diff_order_invoice_date_AMAL};;
+    value_format: "0"
+  }
+
+  measure: max_dif_order_invoice_AMAL {
+    group_label: "AMAL"
+    type: max
+    sql: ${diff_order_invoice_date_AMAL} ;;
+  }
+
+  measure: min_dif_order_invoice_AMAL {
+    group_label: "AMAL"
+    type: min
+    sql: ${diff_order_invoice_date_AMAL} ;;
+  }
+
+  dimension: Logo_Brand_AMAL  {
+    group_label: "AMAL"
+    label: "Logo brand"
+    sql: ${brand} ;;
+    html:
+        {% case value %}
+    {% when "ALPINE"  %}
+     <img src="https://logos-world.net/wp-content/uploads/2021/08/Alpine-Logo.png" width="60" height= "41" >
+    {% when "DACIA"  %}
+     <img src="https://th.bing.com/th/id/R.d2ad9cb08750329f7f3a9c26d1c099a9?rik=DcdZmpfkHN%2ffeQ&pid=ImgRaw&r=0" width="60" height= "41">
+    {% else %}
+     <img src="https://th.bing.com/th/id/OIP.zDzBfI6j78kO-rH3cOfDgAHaHa?pid=ImgDet&rs=1" width="60" height= "41">
+    {% endcase %};;
+  }
+
+
+  #___________________ end amal
+
   dimension: Brand_Logo {
     group_label: "asma"
     type: string
@@ -874,6 +938,9 @@ dimension: logo {
          END;;
     html: <img src={{value}} width="255">;;
   }
+
+
+
   dimension_group: order_date_asma{
     group_label: "asma"
     type: time
