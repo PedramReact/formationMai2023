@@ -885,6 +885,28 @@ dimension: logo {
     html: {{ rendered_value | date: "%A %d %b %y" }};;
   }
 
+  measure: min_catalogue_price_AMAL{
+    group_label: "AMAL"
+    type: min
+    value_format:"0.0€"
+    sql: ${catalogue_price};;
+
+  }
+
+  measure: max_catalogue_price_AMAL {
+    group_label: "AMAL"
+    type: max
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+
+  measure: average_catalogue_price_AMAL {
+    group_label: "AMAL"
+    type: average
+    value_format: "0.0€"
+    sql: ${catalogue_price} ;;
+  }
+
   #___________________ end amal
 
   dimension: Brand_Logo {
