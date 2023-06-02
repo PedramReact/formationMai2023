@@ -206,11 +206,10 @@ view: vin_data {
 
   parameter: grain_DEB {
     group_label: "DEB"
-    type: string
-    allowed_value: {value:"Original Value"}
-    allowed_value: {value:"Year"}
-    allowed_value: {value:"Month"}
-    allowed_value: {value:"Week"}
+    type: unquoted
+    allowed_value: {value:"year"}
+    allowed_value: {value:"month"}
+    allowed_value: {value:"week"}
     }
 
 
