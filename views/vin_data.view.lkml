@@ -706,7 +706,7 @@ dimension: logo {
 
     dimension: Logo_Brand_AMAL  {
       group_label: "AMAL"
-      label: "LogoBrand"
+      label: "Logo brand"
       sql: ${brand} ;;
       html:
         {% case value %}
@@ -840,15 +840,17 @@ dimension: logo {
     sql: REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fuel_type,"DIESEL","Gasoil"),"ELECTRIC","Electrique"),"PETROL CNGGAZ","GAZ"),"PETROL LPG","GAZ"),"PETROL","Essence") ;;
   }
 
+  #___________________ start amal
+
   dimension: dealer_name_modified_amal {
-    label: "dealer_name_modified_amal"
+    label: "dealer name modified amal"
     group_label: "AMAL"
     type: string
     sql: replace(${dealer_name}, " ", "_") ;;
   }
 
   dimension: fuel_type_amal {
-    label: "type de carburant"
+    label: "fuel type"
     group_label: "AMAL"
     type: string
     sql:(
@@ -862,19 +864,7 @@ dimension: logo {
        END ) ;;
     }
 
-  dimension: Brand_Logo {
-    group_label: "asma"
-    type: string
-    sql: CASE
-         WHEN ${brand} = 'ALPINE' THEN 'https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg'
-         WHEN ${brand} = 'DACIA' THEN 'https://upload.wikimedia.org/wikipedia/fr/4/4d/Logo_Dacia.svg'
-         WHEN ${brand} = 'RENAULT' THEN 'https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg'
-         END;;
-    html: <img src={{value}} width="255">;;
-  }
-
   dimension_group: order_date_AMAL {
-    group_label: "AMAL"
     type: time
     timeframes: [
       date,
@@ -887,6 +877,28 @@ dimension: logo {
     datatype: date
     sql: ${TABLE}.order_date ;;
   }
+
+  dimension: invoice_date_formatted_AMAL {
+    label: "invoice date formatted"
+    group_label: "AMAL"
+    sql: ${TABLE}.invoice_date ;;
+    html: {{ rendered_value | date: "%A %d %b %y" }};;
+  }
+
+  #___________________ end amal
+
+  dimension: Brand_Logo {
+    group_label: "asma"
+    type: string
+    sql: CASE
+         WHEN ${brand} = 'ALPINE' THEN 'https://www.retro-laser.com/wp-content/uploads/2021/12/2021-12-13-at-08-17-16.jpg'
+         WHEN ${brand} = 'DACIA' THEN 'https://upload.wikimedia.org/wikipedia/fr/4/4d/Logo_Dacia.svg'
+         WHEN ${brand} = 'RENAULT' THEN 'https://upload.wikimedia.org/wikipedia/commons/4/49/Renault_2009_logo.svg'
+         END;;
+    html: <img src={{value}} width="255">;;
+  }
+
+
 
   dimension_group: order_date_asma{
     group_label: "asma"
