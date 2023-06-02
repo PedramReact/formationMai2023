@@ -557,6 +557,14 @@ view: vin_data {
     {% endcase %};;
     }
 
+  dimension: concat_model_version_AMAL {
+    label: "Concat Model Version"
+    group_label: "AMAL"
+    type: string
+    sql: CONCAT(${model}, "-",${version});;
+    drill_fields: [brand, model, version, catalogue_price]
+  }
+
   dimension: Type_de_carburant_matveeva {
     type:  string
     sql:
@@ -678,6 +686,7 @@ view: vin_data {
   }
 
   dimension: fuel_type_amal {
+    label: "type de carburant"
     group_label: "AMAL"
     type: string
     sql:(
