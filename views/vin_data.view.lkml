@@ -915,7 +915,7 @@ dimension: logo {
   dimension: diff_order_invoice_date_AMAL {
     group_label: "AMAL"
     type: number
-    sql:  DATETIME_DIFF(${invoice_date}, ${order_date_junaid_date}, DAY);;
+    sql:  DATETIME_DIFF(${invoice_date}, ${order_date_AMAL_date}, DAY);;
   }
 
   measure: avg_dif_order_invoice_AMAL{
