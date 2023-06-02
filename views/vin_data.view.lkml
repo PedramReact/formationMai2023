@@ -818,6 +818,22 @@ dimension: logo {
          END;;
     html: <img src={{value}} width="255">;;
   }
+
+  dimension_group: order_date_AMAL {
+    group_label: "AMAL"
+    type: time
+    timeframes: [
+      date,
+      day_of_week,
+      week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.order_date ;;
+  }
+
   dimension_group: order_date_asma{
     group_label: "asma"
     type: time
